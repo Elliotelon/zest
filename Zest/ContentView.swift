@@ -16,6 +16,9 @@ struct ContentView: View {
             Text("Hello, world!")
         }
         .padding()
+        .onAppear {
+            print("🚀 현재 서버 주소: \(Env.baseURL)")
+        }
     }
 }
 
