@@ -16,7 +16,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		950687FD2F173B3500CBD018 /* Exceptions for "Zest" folder in "Zest" target */ = {
+		95D1E62E2F18E58300C493DC /* Exceptions for "Zest" folder in "Zest" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -29,14 +29,9 @@
 		95015D9B2F1603A30034404F /* Zest */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				950687FD2F173B3500CBD018 /* Exceptions for "Zest" folder in "Zest" target */,
+				95D1E62E2F18E58300C493DC /* Exceptions for "Zest" folder in "Zest" target */,
 			);
 			path = Zest;
-			sourceTree = "<group>";
-		};
-		950687F82F1736FB00CBD018 /* Configs */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Configs;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -56,7 +51,6 @@
 			isa = PBXGroup;
 			children = (
 				950688072F17447000CBD018 /* .gitignore */,
-				950687F82F1736FB00CBD018 /* Configs */,
 				95015D9B2F1603A30034404F /* Zest */,
 				95015D9A2F1603A30034404F /* Products */,
 			);
@@ -87,7 +81,6 @@
 			);
 			fileSystemSynchronizedGroups = (
 				95015D9B2F1603A30034404F /* Zest */,
-				950687F82F1736FB00CBD018 /* Configs */,
 			);
 			name = Zest;
 			packageProductDependencies = (
@@ -154,8 +147,8 @@
 /* Begin XCBuildConfiguration section */
 		95015DA22F1603A50034404F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = 950687F82F1736FB00CBD018 /* Configs */;
-			baseConfigurationReferenceRelativePath = Development.xcconfig;
+			baseConfigurationReferenceAnchor = 95015D9B2F1603A30034404F /* Zest */;
+			baseConfigurationReferenceRelativePath = Configs/Development.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -220,8 +213,8 @@
 		};
 		95015DA32F1603A50034404F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = 950687F82F1736FB00CBD018 /* Configs */;
-			baseConfigurationReferenceRelativePath = Production.xcconfig;
+			baseConfigurationReferenceAnchor = 95015D9B2F1603A30034404F /* Zest */;
+			baseConfigurationReferenceRelativePath = Configs/Production.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -279,8 +272,8 @@
 		};
 		95015DA52F1603A50034404F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = 950687F82F1736FB00CBD018 /* Configs */;
-			baseConfigurationReferenceRelativePath = Development.xcconfig;
+			baseConfigurationReferenceAnchor = 95015D9B2F1603A30034404F /* Zest */;
+			baseConfigurationReferenceRelativePath = Configs/Development.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -314,8 +307,8 @@
 		};
 		95015DA62F1603A50034404F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = 950687F82F1736FB00CBD018 /* Configs */;
-			baseConfigurationReferenceRelativePath = Production.xcconfig;
+			baseConfigurationReferenceAnchor = 95015D9B2F1603A30034404F /* Zest */;
+			baseConfigurationReferenceRelativePath = Configs/Production.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -349,8 +342,8 @@
 		};
 		950688022F173DF700CBD018 /* Staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = 950687F82F1736FB00CBD018 /* Configs */;
-			baseConfigurationReferenceRelativePath = Staging.xcconfig;
+			baseConfigurationReferenceAnchor = 95015D9B2F1603A30034404F /* Zest */;
+			baseConfigurationReferenceRelativePath = Configs/Staging.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -408,8 +401,8 @@
 		};
 		950688032F173DF700CBD018 /* Staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = 950687F82F1736FB00CBD018 /* Configs */;
-			baseConfigurationReferenceRelativePath = Staging.xcconfig;
+			baseConfigurationReferenceAnchor = 95015D9B2F1603A30034404F /* Zest */;
+			baseConfigurationReferenceRelativePath = Configs/Staging.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
