@@ -8,10 +8,21 @@
 import SwiftUI
 import Combine
 
-// 화면의 상태와 로직 관리
 @MainActor
 class HomeViewModel: ObservableObject {
     @Published var posts: [Post] = []
-    
-    // 향후 UseCase 및 Coordinator 주입 예정
+    private let useCase: FetchPostsUseCase
+
+    init(useCase: FetchPostsUseCase) {
+        self.useCase = useCase
+    }
+
+    func load() async {
+        do {
+            self.posts = try await useCase.execute()
+            print("✅ 데이터 로드 성공: \(posts.count)개")
+        } catch {
+            print(String(describing: error))
+        }
+    }
 }

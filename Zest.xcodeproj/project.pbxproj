@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		950688082F17447A00CBD018 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 950688072F17447000CBD018 /* .gitignore */; };
+		95BFD6F02F1A3704000CE31D /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 95BFD6EF2F1A3704000CE31D /* Supabase */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				95BFD6F02F1A3704000CE31D /* Supabase in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,6 +86,7 @@
 			);
 			name = Zest;
 			packageProductDependencies = (
+				95BFD6EF2F1A3704000CE31D /* Supabase */,
 			);
 			productName = Zest;
 			productReference = 95015D992F1603A30034404F /* Zest.app */;
@@ -113,6 +116,9 @@
 			);
 			mainGroup = 95015D902F1603A30034404F;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				95BFD6EE2F1A3704000CE31D /* XCRemoteSwiftPackageReference "supabase-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 95015D9A2F1603A30034404F /* Products */;
 			projectDirPath = "";
@@ -458,6 +464,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		95BFD6EE2F1A3704000CE31D /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase/supabase-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		95BFD6EF2F1A3704000CE31D /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 95BFD6EE2F1A3704000CE31D /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 95015D912F1603A30034404F /* Project object */;
 }

@@ -8,19 +8,15 @@
 import SwiftUI
 
 struct HomeView: View {
+    @StateObject var viewModel: HomeViewModel = HomeViewModel(useCase: FetchPostsUseCase(repository: PostRepository()))
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        List(viewModel.posts) { post in
+            Text(post.title)
         }
-        .padding()
-        .onAppear {
-            print("🚀 현재 서버 주소: \(Env.baseURL)")
-        }
+        .task { await viewModel.load() } 
     }
 }
+
 
 #Preview {
     HomeView()
