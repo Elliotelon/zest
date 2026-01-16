@@ -6,8 +6,14 @@
 //
 
 import Foundation
-
+import Supabase
 
 final class APIService {
     
+    static let shared = SupabaseClient(
+            supabaseURL: Env.supabaseURL,
+            supabaseKey: Env.supabaseAnonKey
+        )
+        
+    private init() {}
 }

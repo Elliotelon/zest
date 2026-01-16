@@ -13,4 +13,5 @@ struct FetchPostsUseCase {
     func execute() async throws -> [Post] {
         try await repository.fetchPosts()
     }
+    
 }
