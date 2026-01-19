@@ -5,9 +5,19 @@
 //  Created by 김민규 on 1/15/26.
 //
 
-import Foundation
+import Supabase
+import SwiftUI
 
-// 객체들의 의존성을 조립하는 공장
 final class HomeDIContainer {
-    // 뷰모델 및 유스케이스 조립 로직 작성 예정
+    private let client = SupabaseClient(
+        supabaseURL: Env.supabaseURL,
+        supabaseKey: Env.supabaseAnonKey
+    )
+
+    func makeHomeView() -> some View {
+        let appleLoginUseCase = AppleLoginUseCase(repository: AuthRepository(client: client))
+        let fetchPostsUsecase = FetchPostsUseCase(repository: PostRepository())
+        let viewModel = HomeViewModel(fetchPostsUseCase: fetchPostsUsecase, appleLoginUseCase: appleLoginUseCase)
+        return HomeView(viewModel: viewModel)
+    }
 }
