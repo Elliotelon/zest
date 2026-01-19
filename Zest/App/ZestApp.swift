@@ -9,10 +9,12 @@ import SwiftUI
 
 @main
 struct ZestApp: App {
+    
+    private let homeDIContainer = HomeDIContainer()
    
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            homeDIContainer.makeHomeView()
         }
     }
 }
