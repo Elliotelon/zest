@@ -13,7 +13,9 @@ struct HomeView: View {
         List(viewModel.posts) { post in
             Text(post.title)
         }
-        .task { await viewModel.load() } 
+        .task { await viewModel.load() }
+        
+        AppleSignInButtonView()
     }
 }
 

@@ -2,6 +2,19 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.elliot.Zest</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>Zest</string>
+			</array>
+		</dict>
+	</array>
 	<key>SERVER_HOST</key>
 	<string>$(SERVER_HOST)</string>
 	<key>SUPABASE_ANON_KEY</key>
