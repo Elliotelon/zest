@@ -32,6 +32,11 @@ struct AppleSignInButtonView: View {
         do {
             
             try await supabase.auth.signInWithOAuth(provider: .apple, redirectTo: URL(string: "Zest://login-callback")!)
+            let session = try await supabase.auth.session
+            print("현재 세션 있음")
+            print("Access token: \(session.accessToken)")
+            print("User ID: \(session.user.id)")
+            print("Email: \(session.user.email ?? "없음")")
             
         } catch {
             print("Apple 로그인 실패:", error.localizedDescription)
