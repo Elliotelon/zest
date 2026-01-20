@@ -8,8 +8,9 @@
 import AuthenticationServices
 
 protocol AuthRepositoryProtocol {
-    /// 애플에서 받은 자격증명(Credential)을 이용해 Supabase 세션을 생성합니다.
     func signInWithSupabase(credential: ASAuthorizationAppleIDCredential) async throws
+    func checkSession() async throws -> Bool
+    func observeAuthStateChanges(_ onChanged: @escaping (Bool) -> Void) -> Task<Void, Never>
+    func signOut() async throws
 }
-
 
