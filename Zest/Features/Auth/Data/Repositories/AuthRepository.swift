@@ -49,5 +49,24 @@ final class AuthRepository: AuthRepositoryProtocol {
     func signOut() async throws {
         try await client.auth.signOut()
     }
+    
+    func saveProfiles(credential: ASAuthorizationAppleIDCredential) async throws {
+        // 현재 Supabase Auth 세션에서 사용자 ID 가져오기
+        let session = try await client.auth.session
+        let userId = session.user.id
+        
+        // 애플에서 제공하는 사용자 정보
+        let email = session.user.email
+        let givenName = session.user.userMetadata["full_name"]?.stringValue
+        
+        
+        // profiles 테이블에 사용자 정보 저장 (upsert 방식)
+        let profilesData = ProfilesDTO(id: userId, email: email, name: givenName)
+        
+        try await client
+            .from("profiles")
+            .upsert(profilesData)
+            .execute()
+    }
 }
 

@@ -16,7 +16,11 @@ final class AuthDIContainer {
     }
     
     func makeLoginView() -> some View {
-        let appleLoginUseCase = AppleLoginUseCase(repository: repository)
+        let saveProfilesUseCase = SaveProfilesUseCase(repository: repository)
+        let appleLoginUseCase = AppleLoginUseCase(
+            repository: repository,
+            saveProfilesUseCase: saveProfilesUseCase
+        )
         let viewModel = AuthViewModel(appleLoginUseCase: appleLoginUseCase)
         return LoginView(viewModel: viewModel)
     }
