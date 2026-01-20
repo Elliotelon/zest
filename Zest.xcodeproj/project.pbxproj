@@ -8,12 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		950688082F17447A00CBD018 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 950688072F17447000CBD018 /* .gitignore */; };
+		9598A0E82F1F491E00F9D106 /* .cursorrules in Resources */ = {isa = PBXBuildFile; fileRef = 9598A0E72F1F491400F9D106 /* .cursorrules */; };
 		95BFD6F02F1A3704000CE31D /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 95BFD6EF2F1A3704000CE31D /* Supabase */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		95015D992F1603A30034404F /* Zest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		950688072F17447000CBD018 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		9598A0E72F1F491400F9D106 /* .cursorrules */ = {isa = PBXFileReference; lastKnownFileType = text; path = .cursorrules; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -52,6 +54,7 @@
 		95015D902F1603A30034404F = {
 			isa = PBXGroup;
 			children = (
+				9598A0E72F1F491400F9D106 /* .cursorrules */,
 				950688072F17447000CBD018 /* .gitignore */,
 				95015D9B2F1603A30034404F /* Zest */,
 				95015D9A2F1603A30034404F /* Products */,
@@ -135,6 +138,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				950688082F17447A00CBD018 /* .gitignore in Resources */,
+				9598A0E82F1F491E00F9D106 /* .cursorrules in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
