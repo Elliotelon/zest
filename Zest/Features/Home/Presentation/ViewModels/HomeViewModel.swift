@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Combine
-import AuthenticationServices
 
 @MainActor
 class HomeViewModel: ObservableObject {
@@ -16,11 +15,12 @@ class HomeViewModel: ObservableObject {
     @Published var errorMessage: String?
     
     private let fetchPostsUseCase: FetchPostsUseCase
-    private let appleLoginUseCase: AppleLoginUseCase
+    private let logoutUseCase: LogoutUseCase
     
-    init(fetchPostsUseCase: FetchPostsUseCase, appleLoginUseCase: AppleLoginUseCase) {
+    init(fetchPostsUseCase: FetchPostsUseCase,
+         logoutUseCase: LogoutUseCase) {
         self.fetchPostsUseCase = fetchPostsUseCase
-        self.appleLoginUseCase = appleLoginUseCase
+        self.logoutUseCase = logoutUseCase
     }
     
     func load() async {
@@ -32,30 +32,16 @@ class HomeViewModel: ObservableObject {
         }
     }
     
-    func handleAppleLoginResult(result: Result<ASAuthorization, Error>) {
-        switch result {
-        case .success(let authorization):
-            guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential else { return }
-            
-            isLoading = true
-            Task {
-                do {
-                    // UseCase 실행 (팝업이 닫히는 시점에 Supabase 통신 시작)
-                    try await appleLoginUseCase.execute(with: credential)
-                    print("Zest 로그인 성공")
-                } catch {
-                    self.errorMessage = error.localizedDescription
-                }
-                isLoading = false
-            }
-            
-        case .failure(let error):
-            // 사용자가 취소한 경우는 에러 메시지를 띄우지 않음
-            let authError = error as NSError
-            if authError.domain == ASAuthorizationErrorDomain && authError.code == ASAuthorizationError.canceled.rawValue {
-                return
-            }
+    /// 로그아웃 수행
+    func logout() async {
+        isLoading = true
+        do {
+            try await logoutUseCase.execute()
+            // AppCoordinator가 authStateChanges를 구독하고 있으므로
+            // 여기서는 별도의 화면 전환 없이 Supabase 세션만 종료하면 됨.
+        } catch {
             self.errorMessage = error.localizedDescription
         }
+        isLoading = false
     }
 }
