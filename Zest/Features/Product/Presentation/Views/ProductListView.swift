@@ -10,6 +10,7 @@ import SwiftUI
 struct ProductListView: View {
     @StateObject var viewModel: ProductViewModel
     let productDIContainer: ProductDIContainer
+    @ObservedObject var sessionManager = SessionManager.shared
     
     var body: some View {
         NavigationView {
@@ -33,7 +34,10 @@ struct ProductListView: View {
                     List {
                         ForEach(viewModel.products) { product in
                             NavigationLink {
-                                productDIContainer.makeProductDetailView(productId: product.id)
+                                productDIContainer.makeProductDetailView(
+                                    productId: product.id,
+                                    profileId: sessionManager.profileId
+                                )
                             } label: {
                                 ProductRowView(product: product)
                             }

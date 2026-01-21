@@ -12,10 +12,21 @@
 		95BFD6F02F1A3704000CE31D /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 95BFD6EF2F1A3704000CE31D /* Supabase */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		95D5A1EF2F21057000B4CA5D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 95015D912F1603A30034404F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 95015D982F1603A30034404F;
+			remoteInfo = Zest;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		95015D992F1603A30034404F /* Zest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		950688072F17447000CBD018 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		9598A0E72F1F491400F9D106 /* .cursorrules */ = {isa = PBXFileReference; lastKnownFileType = text; path = .cursorrules; sourceTree = "<group>"; };
+		95D5A1EB2F21057000B4CA5D /* ZestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -37,6 +48,11 @@
 			path = Zest;
 			sourceTree = "<group>";
 		};
+		95D5A1EC2F21057000B4CA5D /* ZestTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ZestTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +61,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				95BFD6F02F1A3704000CE31D /* Supabase in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		95D5A1E82F21057000B4CA5D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,6 +80,7 @@
 				9598A0E72F1F491400F9D106 /* .cursorrules */,
 				950688072F17447000CBD018 /* .gitignore */,
 				95015D9B2F1603A30034404F /* Zest */,
+				95D5A1EC2F21057000B4CA5D /* ZestTests */,
 				95015D9A2F1603A30034404F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -65,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				95015D992F1603A30034404F /* Zest.app */,
+				95D5A1EB2F21057000B4CA5D /* ZestTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -95,6 +120,29 @@
 			productReference = 95015D992F1603A30034404F /* Zest.app */;
 			productType = "com.apple.product-type.application";
 		};
+		95D5A1EA2F21057000B4CA5D /* ZestTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 95D5A1F12F21057000B4CA5D /* Build configuration list for PBXNativeTarget "ZestTests" */;
+			buildPhases = (
+				95D5A1E72F21057000B4CA5D /* Sources */,
+				95D5A1E82F21057000B4CA5D /* Frameworks */,
+				95D5A1E92F21057000B4CA5D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				95D5A1F02F21057000B4CA5D /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				95D5A1EC2F21057000B4CA5D /* ZestTests */,
+			);
+			name = ZestTests;
+			packageProductDependencies = (
+			);
+			productName = ZestTests;
+			productReference = 95D5A1EB2F21057000B4CA5D /* ZestTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -107,6 +155,10 @@
 				TargetAttributes = {
 					95015D982F1603A30034404F = {
 						CreatedOnToolsVersion = 26.2;
+					};
+					95D5A1EA2F21057000B4CA5D = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 95015D982F1603A30034404F;
 					};
 				};
 			};
@@ -128,6 +180,7 @@
 			projectRoot = "";
 			targets = (
 				95015D982F1603A30034404F /* Zest */,
+				95D5A1EA2F21057000B4CA5D /* ZestTests */,
 			);
 		};
 /* End PBXProject section */
@@ -142,6 +195,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		95D5A1E92F21057000B4CA5D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -152,7 +212,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		95D5A1E72F21057000B4CA5D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		95D5A1F02F21057000B4CA5D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 95015D982F1603A30034404F /* Zest */;
+			targetProxy = 95D5A1EF2F21057000B4CA5D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		95015DA22F1603A50034404F /* Debug */ = {
@@ -210,7 +285,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -270,7 +345,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -411,7 +486,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -462,6 +537,69 @@
 			};
 			name = Staging;
 		};
+		95D5A1F22F21057000B4CA5D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = A3GL2XU4F8;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.elliot.ZestTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Zest.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Zest";
+			};
+			name = Debug;
+		};
+		95D5A1F32F21057000B4CA5D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = A3GL2XU4F8;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.elliot.ZestTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Zest.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Zest";
+			};
+			name = Release;
+		};
+		95D5A1F42F21057000B4CA5D /* Staging */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = A3GL2XU4F8;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.elliot.ZestTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Zest.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Zest";
+			};
+			name = Staging;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -481,6 +619,16 @@
 				95015DA52F1603A50034404F /* Debug */,
 				95015DA62F1603A50034404F /* Release */,
 				950688032F173DF700CBD018 /* Staging */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		95D5A1F12F21057000B4CA5D /* Build configuration list for PBXNativeTarget "ZestTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				95D5A1F22F21057000B4CA5D /* Debug */,
+				95D5A1F32F21057000B4CA5D /* Release */,
+				95D5A1F42F21057000B4CA5D /* Staging */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

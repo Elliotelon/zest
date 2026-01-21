@@ -8,17 +8,20 @@ struct RootView: View {
     
     private let authDIContainer: AuthDIContainer
     private let productDIContainer: ProductDIContainer
+    private let couponDIContainer: CouponDIContainer
     private let authRepository: AuthRepositoryProtocol
 
     init(
         coordinator: AppCoordinator,
         authDIContainer: AuthDIContainer,
         productDIContainer: ProductDIContainer,
+        couponDIContainer: CouponDIContainer,
         authRepository: AuthRepositoryProtocol
     ) {
         _coordinator = StateObject(wrappedValue: coordinator)
         self.authDIContainer = authDIContainer
         self.productDIContainer = productDIContainer
+        self.couponDIContainer = couponDIContainer
         self.authRepository = authRepository
     }
     
@@ -32,6 +35,7 @@ struct RootView: View {
             case .home:
                 MainTabView(
                     productDIContainer: productDIContainer,
+                    couponDIContainer: couponDIContainer,
                     profileId: sessionManager.profileId,
                     email: sessionManager.email,
                     name: nil, // Supabase는 기본적으로 name을 제공하지 않음

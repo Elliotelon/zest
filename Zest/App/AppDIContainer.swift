@@ -34,11 +34,16 @@ final class AppDIContainer {
         ProductDIContainer()
     }()
     
+    private lazy var couponDIContainer: CouponDIContainer = {
+        CouponDIContainer()
+    }()
+    
     func makeRootView() -> some View {
         RootView(
             coordinator: appCoordinator,
             authDIContainer: authDIContainer,
             productDIContainer: productDIContainer,
+            couponDIContainer: couponDIContainer,
             authRepository: authRepository
         )
     }
