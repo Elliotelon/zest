@@ -15,6 +15,16 @@ final class ProductDIContainer {
         let repository = ProductRepository(client: client)
         let fetchProductsUseCase = FetchProductsUseCase(repository: repository)
         let viewModel = ProductViewModel(fetchProductsUseCase: fetchProductsUseCase)
-        return ProductListView(viewModel: viewModel)
+        return ProductListView(viewModel: viewModel, productDIContainer: self)
+    }
+    
+    func makeProductDetailView(productId: UUID) -> some View {
+        let repository = ProductRepository(client: client)
+        let fetchProductDetailUseCase = FetchProductDetailUseCase(repository: repository)
+        let viewModel = ProductDetailViewModel(
+            productId: productId,
+            fetchProductDetailUseCase: fetchProductDetailUseCase
+        )
+        return ProductDetailView(viewModel: viewModel)
     }
 }

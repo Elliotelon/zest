@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ProductListView: View {
     @StateObject var viewModel: ProductViewModel
+    let productDIContainer: ProductDIContainer
     
     var body: some View {
         NavigationView {
@@ -31,15 +32,19 @@ struct ProductListView: View {
                 } else {
                     List {
                         ForEach(viewModel.products) { product in
-                            ProductRowView(product: product)
-                                .onAppear {
-                                    // 마지막에서 5번째 아이템이 보이면 다음 페이지 로드 (프리페칭)
-                                    if viewModel.shouldLoadMore(currentItem: product) {
-                                        Task {
-                                            await viewModel.loadMoreProducts()
-                                        }
+                            NavigationLink {
+                                productDIContainer.makeProductDetailView(productId: product.id)
+                            } label: {
+                                ProductRowView(product: product)
+                            }
+                            .onAppear {
+                                // 마지막에서 5번째 아이템이 보이면 다음 페이지 로드 (프리페칭)
+                                if viewModel.shouldLoadMore(currentItem: product) {
+                                    Task {
+                                        await viewModel.loadMoreProducts()
                                     }
                                 }
+                            }
                         }
                         
                         // 추가 로딩 인디케이터
@@ -99,8 +104,6 @@ struct ProductRowView: View {
 }
 
 #Preview {
-    let repository = ProductRepository(client: APIService.shared)
-    let useCase = FetchProductsUseCase(repository: repository)
-    let viewModel = ProductViewModel(fetchProductsUseCase: useCase)
-    return ProductListView(viewModel: viewModel)
+    let diContainer = ProductDIContainer()
+    return diContainer.makeProductListView()
 }
