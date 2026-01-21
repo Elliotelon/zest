@@ -44,6 +44,8 @@ struct ProfileView: View {
                     }
                 }
                 
+               
+                
                 Section {
                     Button(action: onLogout) {
                         HStack {

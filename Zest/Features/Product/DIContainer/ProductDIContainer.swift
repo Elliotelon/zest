@@ -10,6 +10,7 @@ import SwiftUI
 
 final class ProductDIContainer {
     private let client = APIService.shared
+    private let couponDIContainer = CouponDIContainer()
     
     func makeProductListView() -> some View {
         let repository = ProductRepository(client: client)
@@ -18,13 +19,19 @@ final class ProductDIContainer {
         return ProductListView(viewModel: viewModel, productDIContainer: self)
     }
     
-    func makeProductDetailView(productId: UUID) -> some View {
+    func makeProductDetailView(productId: UUID, profileId: UUID?) -> some View {
         let repository = ProductRepository(client: client)
         let fetchProductDetailUseCase = FetchProductDetailUseCase(repository: repository)
         let viewModel = ProductDetailViewModel(
             productId: productId,
             fetchProductDetailUseCase: fetchProductDetailUseCase
         )
-        return ProductDetailView(viewModel: viewModel)
+        let couponViewModel = couponDIContainer.makeCouponViewModel()
+        
+        return ProductDetailView(
+            viewModel: viewModel,
+            couponViewModel: couponViewModel,
+            profileId: profileId
+        )
     }
 }
