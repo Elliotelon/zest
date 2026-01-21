@@ -26,19 +26,25 @@ final class AppDIContainer {
         )
     }()
     
-    private lazy var homeDIContainer: HomeDIContainer = {
-        HomeDIContainer(authRepository: authRepository)
-    }()
-    
     private lazy var authDIContainer: AuthDIContainer = {
         AuthDIContainer(repository: authRepository)
+    }()
+    
+    private lazy var productDIContainer: ProductDIContainer = {
+        ProductDIContainer()
+    }()
+    
+    private lazy var cartDIContainer: CartDIContainer = {
+        CartDIContainer()
     }()
     
     func makeRootView() -> some View {
         RootView(
             coordinator: appCoordinator,
-            homeDIContainer: homeDIContainer,
-            authDIContainer: authDIContainer
+            authDIContainer: authDIContainer,
+            productDIContainer: productDIContainer,
+            cartDIContainer: cartDIContainer,
+            authRepository: authRepository
         )
     }
 }
