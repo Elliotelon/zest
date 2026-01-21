@@ -34,16 +34,11 @@ final class AppDIContainer {
         ProductDIContainer()
     }()
     
-    private lazy var cartDIContainer: CartDIContainer = {
-        CartDIContainer()
-    }()
-    
     func makeRootView() -> some View {
         RootView(
             coordinator: appCoordinator,
             authDIContainer: authDIContainer,
             productDIContainer: productDIContainer,
-            cartDIContainer: cartDIContainer,
             authRepository: authRepository
         )
     }

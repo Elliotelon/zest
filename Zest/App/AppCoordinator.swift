@@ -11,11 +11,13 @@ import Combine
 /// 앱 시작 시 세션을 확인하고, 이후 Auth 상태 변화를 감지해 화면을 전환하는 코디네이터
 @MainActor
 final class AppCoordinator: ObservableObject {
-    @Published var currentRoute: AppRoute = .login
+    @Published var currentRoute: AppRoute = .splash
+    @Published var userId: UUID?
     
     private let checkSessionUseCase: CheckSessionUseCase
     private let authRepository: AuthRepositoryProtocol
     private var authStateTask: Task<Void, Never>?
+    private var isInitialized = false
     
     init(checkSessionUseCase: CheckSessionUseCase,
          authRepository: AuthRepositoryProtocol) {
@@ -30,8 +32,11 @@ final class AppCoordinator: ObservableObject {
     }
     
     private func checkInitialSession() async {
+        guard !isInitialized else { return }
         let hasSession = await checkSessionUseCase.execute()
+         
         currentRoute = hasSession ? .home : .login
+        self.isInitialized = true
     }
     
     private func observeAuthChanges() {

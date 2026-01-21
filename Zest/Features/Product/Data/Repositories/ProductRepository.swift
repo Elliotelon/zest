@@ -19,6 +19,19 @@ final class ProductRepository: ProductRepositoryProtocol {
         let response: [ProductDTO] = try await client
             .from("products")
             .select()
+            .order("created_at", ascending: false)
+            .execute()
+            .value
+        
+        return response.map { $0.toEntity() }
+    }
+    
+    func fetchProducts(offset: Int, limit: Int) async throws -> [Product] {
+        let response: [ProductDTO] = try await client
+            .from("products")
+            .select()
+            .order("created_at", ascending: false)
+            .range(from: offset, to: offset + limit - 1)
             .execute()
             .value
         
