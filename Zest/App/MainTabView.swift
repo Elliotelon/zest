@@ -9,8 +9,7 @@ import SwiftUI
 
 struct MainTabView: View {
     let productDIContainer: ProductDIContainer
-    let cartDIContainer: CartDIContainer
-    let profileId: UUID
+    let profileId: UUID?
     let email: String?
     let name: String?
     let onLogout: () -> Void
@@ -20,11 +19,6 @@ struct MainTabView: View {
             productDIContainer.makeProductListView()
                 .tabItem {
                     Label("상품", systemImage: "storefront")
-                }
-            
-            cartDIContainer.makeCartView(profileId: profileId)
-                .tabItem {
-                    Label("장바구니", systemImage: "cart")
                 }
             
             CouponView()

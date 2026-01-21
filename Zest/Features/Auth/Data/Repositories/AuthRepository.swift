@@ -35,6 +35,15 @@ final class AuthRepository: AuthRepositoryProtocol {
         }
     }
     
+    func hasSession() async throws -> Session? {
+        do {
+            let session = try await client.auth.session
+            return session
+        } catch {
+            return nil
+        }
+    }
+    
     func observeAuthStateChanges(_ onChanged: @escaping (Bool) -> Void) -> Task<Void, Never> {
         Task {
             for await event in client.auth.authStateChanges {

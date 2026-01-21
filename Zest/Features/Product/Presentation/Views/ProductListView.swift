@@ -29,15 +29,37 @@ struct ProductListView: View {
                         }
                     }
                 } else {
-                    List(viewModel.products) { product in
-                        ProductRowView(product: product)
+                    List {
+                        ForEach(viewModel.products) { product in
+                            ProductRowView(product: product)
+                                .onAppear {
+                                    // 마지막에서 5번째 아이템이 보이면 다음 페이지 로드 (프리페칭)
+                                    if viewModel.shouldLoadMore(currentItem: product) {
+                                        Task {
+                                            await viewModel.loadMoreProducts()
+                                        }
+                                    }
+                                }
+                        }
+                        
+                        // 추가 로딩 인디케이터
+                        if viewModel.isLoadingMore {
+                            HStack {
+                                Spacer()
+                                ProgressView()
+                                    .tint(.blue)            // 로딩 바퀴 색상을 파란색으로 변경
+                                    .controlSize(.large)     // 크기를 크게 키움 (small, regular, large)
+                                    .padding()
+                                Spacer()
+                            }
+                        }
                     }
                 }
             }
             .navigationTitle("상품 목록")
-            .task {
-                await viewModel.loadProducts()
-            }
+            
+        }.task {
+            await viewModel.loadProducts()
         }
     }
 }

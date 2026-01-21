@@ -9,6 +9,7 @@ import Foundation
 
 /// 앱 전역 화면 상태 (로그인/홈)
 enum AppRoute {
+    case splash
     case login
     case home
 }

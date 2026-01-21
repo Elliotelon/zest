@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ProfileView: View {
-    let profileId: UUID
+    let profileId: UUID?
     let email: String?
     let name: String?
     let onLogout: () -> Void
@@ -20,7 +20,7 @@ struct ProfileView: View {
                     HStack {
                         Text("ID")
                         Spacer()
-                        Text(profileId.uuidString)
+                        Text(profileId?.uuidString ?? "")
                             .foregroundColor(.secondary)
                             .font(.caption)
                     }

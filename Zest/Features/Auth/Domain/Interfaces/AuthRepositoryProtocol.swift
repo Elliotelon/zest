@@ -6,10 +6,12 @@
 //
 
 import AuthenticationServices
+import Supabase
 
 protocol AuthRepositoryProtocol {
     func signInWithSupabase(credential: ASAuthorizationAppleIDCredential) async throws
     func checkSession() async throws -> Bool
+    func hasSession() async throws -> Session?
     func observeAuthStateChanges(_ onChanged: @escaping (Bool) -> Void) -> Task<Void, Never>
     func signOut() async throws
     
