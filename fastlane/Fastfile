@@ -18,10 +18,12 @@ platform :ios do
     scan(
       project: "Zest.xcodeproj", # Workspace 에러 방지
       scheme: "Zest",
-      destination: "platform=iOS Simulator,name=iPhone 16,OS=18.6",
+      device: "iPhone 16 Pro",
       xcargs: "CODE_SIGNING_ALLOWED=NO",
       fail_build: true,
-      clean: true
+      clean: true,
+      verbose: true,
+      buildlog_path: "./fastlane/logs"
     )
   end
 
