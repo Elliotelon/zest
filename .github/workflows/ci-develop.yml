@@ -15,4 +15,9 @@ jobs:
           ruby-version: '3.2'
           bundler-cache: true
       - name: Run Fastlane Test
+        env:
+          # GitHub Secrets에 저장한 이름과 똑같이 맞춰야 합니다.
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}
         run: bundle exec fastlane test
