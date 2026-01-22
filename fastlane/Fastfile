@@ -19,6 +19,7 @@ platform :ios do
       project: "Zest.xcodeproj", # Workspace 에러 방지
       scheme: "Zest",
       device: "iPhone 16 Pro",
+      xcargs: "CODE_SIGNING_ALLOWED=NO",
       fail_build: true,
       clean: true
     )
