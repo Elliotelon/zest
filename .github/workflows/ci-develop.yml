@@ -6,25 +6,24 @@ on:
 
 jobs:
   test:
-    runs-on: macos-15
+    runs-on: macos-15 # 2026년 최신 Xcode 환경
     steps:
       - uses: actions/checkout@v4
-
+      
+      - name: Select Xcode Version
+        run: |
+          sudo xcode-select -s /Applications/Xcode_17.0.app/Contents/Developer
+          xcodebuild -version
+      
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
-          bundler-cache: true # Gemfile 캐싱으로 속도 향상
-
-      # [추가] SPM 라이브러리 캐싱 (빌드 시간 단축)
-      - name: Cache Swift Packages
-        uses: actions/cache@v4
-        with:
-          path: .build
-          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
-          restore-keys: |
-            ${{ runner.os }}-spm-
-
+          bundler-cache: true
       - name: Run Fastlane Test
-       
+        env:
+          # GitHub Secrets에 저장한 이름과 똑같이 맞춰야 합니다.
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}
         run: bundle exec fastlane test
