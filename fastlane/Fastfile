@@ -22,11 +22,13 @@ platform :ios do
   desc "유닛 테스트 실행 (CI용)"
   lane :test do
     scan(
-      project: "Zest.xcodeproj", # Workspace 에러 방지
+      project: "Zest.xcodeproj",
       scheme: "Zest",
-      device: "iPhone 17 Pro",
+      device: "iPhone 16 Pro",
+      xcargs: "-allowProvisioningUpdates -destination 'platform=iOS Simulator,name=iPhone 16 Pro'",
+      clean: true,
       fail_build: true,
-      clean: true
+      xcodebuild_formatter: "xcbeautify"
     )
   end
 
