@@ -8,7 +8,7 @@
 import Foundation
 
 /// 쿠폰 DTO
-struct CouponDTO: Codable {
+struct CouponDTO: Codable, Sendable  {
     let id: UUID
     let name: String
     let discountRate: Double
@@ -41,7 +41,7 @@ struct CouponDTO: Codable {
 }
 
 /// 사용자 쿠폰 DTO
-struct UserCouponDTO: Codable {
+struct UserCouponDTO: Codable, Sendable {
     let id: UUID
     let profileId: UUID
     let couponId: UUID
@@ -71,7 +71,7 @@ struct UserCouponDTO: Codable {
 }
 
 /// 쿠폰 발급 RPC 응답 DTO
-struct IssueCouponResponseDTO: Codable {
+struct IssueCouponResponseDTO: Codable, Sendable {
     let success: Bool
     let error: String?
     let message: String?

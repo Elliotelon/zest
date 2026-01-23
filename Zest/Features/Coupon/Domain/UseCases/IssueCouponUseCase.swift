@@ -8,7 +8,7 @@
 import Foundation
 
 /// 쿠폰 발급 UseCase (동시성 제어 적용)
-final class IssueCouponUseCase {
+final class IssueCouponUseCase: Sendable {
     private let repository: CouponRepositoryProtocol
     
     init(repository: CouponRepositoryProtocol) {

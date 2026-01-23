@@ -8,6 +8,7 @@
 import Supabase
 import SwiftUI
 
+@MainActor
 final class AuthDIContainer {
     private let repository: AuthRepositoryProtocol
     

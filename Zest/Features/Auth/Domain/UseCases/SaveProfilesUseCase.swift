@@ -8,7 +8,7 @@
 import AuthenticationServices
 
 /// 애플 로그인 후 사용자 정보를 Supabase profiles 테이블에 저장하는 UseCase
-final class SaveProfilesUseCase {
+final class SaveProfilesUseCase: Sendable  {
     private let repository: AuthRepositoryProtocol
     
     init(repository: AuthRepositoryProtocol) {

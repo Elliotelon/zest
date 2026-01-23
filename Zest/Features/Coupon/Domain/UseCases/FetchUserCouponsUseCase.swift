@@ -8,7 +8,7 @@
 import Foundation
 
 /// 사용자가 보유한 쿠폰 목록을 가져오는 UseCase
-final class FetchUserCouponsUseCase {
+final class FetchUserCouponsUseCase: Sendable {
     private let repository: CouponRepositoryProtocol
     
     init(repository: CouponRepositoryProtocol) {

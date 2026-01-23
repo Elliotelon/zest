@@ -8,7 +8,7 @@
 import Foundation
 
 /// 사용자 엔티티
-struct Profiles: Codable {
+struct Profiles: Codable, Sendable {
     let id: UUID
     let email: String?
     let name: String?

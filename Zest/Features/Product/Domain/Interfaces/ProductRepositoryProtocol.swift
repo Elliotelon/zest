@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol ProductRepositoryProtocol {
+protocol ProductRepositoryProtocol: Sendable {
     /// 모든 상품 목록을 가져옵니다.
     func fetchProducts() async throws -> [Product]
     

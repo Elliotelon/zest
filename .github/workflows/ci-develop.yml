@@ -1,18 +1,29 @@
 name: Zest CI (Develop)
 
 on:
-  push:
+  pull_request:
     branches: [ "develop" ]
 
 jobs:
   test:
-    runs-on: macos-15 # 2026년 최신 Xcode 환경
+    runs-on: macos-15
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
           bundler-cache: true
+          
+      - name: Cache DerivedData
+        uses: actions/cache@v4
+        with:
+          path: ~/Library/Developer/Xcode/DerivedData
+          key: ${{ runner.os }}-xcode-deriveddata-${{ hashFiles('**/Project.pbxproj') }}
+          restore-keys: |
+            ${{ runner.os }}-xcode-deriveddata-
+            
       - name: Run Fastlane Test
         run: bundle exec fastlane test

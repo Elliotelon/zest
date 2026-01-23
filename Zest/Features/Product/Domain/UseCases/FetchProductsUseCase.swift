@@ -8,7 +8,7 @@
 import Foundation
 
 /// 상품 목록을 가져오는 UseCase
-final class FetchProductsUseCase {
+final class FetchProductsUseCase: Sendable {
     private let repository: ProductRepositoryProtocol
     
     init(repository: ProductRepositoryProtocol) {

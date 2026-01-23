@@ -1,8 +1,9 @@
 name: Zest CD (Main)
 
 on:
-  push:
-    branches: [ "main" ]
+  pull_request:
+     branches: [ "main" ]
+
 
 jobs:
   deploy:
@@ -14,6 +15,7 @@ jobs:
         with:
           ruby-version: '3.2'
           bundler-cache: true
+          
       - name: Deploy to TestFlight
         env:
           # GitHub Secrets에 저장한 이름과 정확히 일치해야 함

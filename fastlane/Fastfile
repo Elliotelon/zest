@@ -14,12 +14,17 @@ platform :ios do
 
   desc "유닛 테스트 실행 (CI용)"
   lane :test do
+  
+    ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "100"
+    ENV["FASTLANE_XCODEBUILD_SETTINGS_RETRIES"] = "5"
+    
     scan(
       project: "Zest.xcodeproj", # Workspace 에러 방지
       scheme: "Zest",
       destination: "platform=iOS Simulator,name=iPhone 16,OS=18.6",
       fail_build: true,
-      clean: true
+      prelaunch_simulator: true,
+      clean: false
     )
   end
 
