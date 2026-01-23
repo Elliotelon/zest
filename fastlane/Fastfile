@@ -22,7 +22,6 @@ platform :ios do
       project: "Zest.xcodeproj", # Workspace 에러 방지
       scheme: "Zest",
       destination: "platform=iOS Simulator,name=iPhone 16,OS=18.6",
-      prelaunch_simulator: true,
       fail_build: true,
       clean: true
     )
