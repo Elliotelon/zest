@@ -36,7 +36,7 @@ final class CouponTests: XCTestCase {
         mockRepository = nil
     }
     
-    // MARK: - 시나리오 1: 기본 쿠폰 조회.
+    // MARK: - 시나리오 1: 기본 쿠폰 조회
     
     func test1_FetchAvailableCoupons_Success() async throws {
         // Given
