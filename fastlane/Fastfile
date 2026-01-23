@@ -17,6 +17,10 @@ platform :ios do
   
     ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "100"
     ENV["FASTLANE_XCODEBUILD_SETTINGS_RETRIES"] = "5"
+    ENV["CODE_SIGNING_ALLOWED"] = "NO"
+    ENV["CODE_SIGNING_REQUIRED"] = "NO"
+    ENV["PROVISIONING_PROFILE_SPECIFIER"] = ""
+    ENV["PROVISIONING_PROFILE"] = ""
     
     scan(
       project: "Zest.xcodeproj", # Workspace 에러 방지
