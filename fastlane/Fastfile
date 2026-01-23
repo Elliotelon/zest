@@ -24,8 +24,7 @@ platform :ios do
       destination: "platform=iOS Simulator,name=iPhone 16,OS=18.6",
       fail_build: true,
       prelaunch_simulator: true,
-      clean: false,
-      xcargs: "-arch x86_64"
+      clean: false
     )
   end
 
