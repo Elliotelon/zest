@@ -16,6 +16,14 @@ jobs:
         with:
           ruby-version: '3.2'
           bundler-cache: true
+          
+      - name: Cache DerivedData
+      uses: actions/cache@v4
+      with:
+        path: ~/Library/Developer/Xcode/DerivedData
+        key: ${{ runner.os }}-xcode-deriveddata-${{  hashFiles('**/Project.pbxproj') }}
+        restore-keys: |
+          ${{ runner.os }}-xcode-deriveddata-
             
       - name: Run Fastlane Test
         run: bundle exec fastlane test

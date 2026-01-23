@@ -174,7 +174,6 @@
 					};
 					95D5A1EA2F21057000B4CA5D = {
 						CreatedOnToolsVersion = 26.2;
-						TestTargetID = 95015D982F1603A30034404F;
 					};
 				};
 			};
@@ -568,7 +567,6 @@
 		95D5A1F22F21057000B4CA5D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = A3GL2XU4F8;
@@ -587,14 +585,12 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Zest.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Zest";
 			};
 			name = Debug;
 		};
 		95D5A1F32F21057000B4CA5D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = A3GL2XU4F8;
@@ -613,14 +609,12 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Zest.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Zest";
 			};
 			name = Release;
 		};
 		95D5A1F42F21057000B4CA5D /* Staging */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = A3GL2XU4F8;
@@ -639,7 +633,6 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Zest.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Zest";
 			};
 			name = Staging;
 		};
