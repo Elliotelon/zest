@@ -1,19 +1,21 @@
 name: Zest CI (Develop)
 
 on:
-    pull_request:
-        branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
 
 jobs:
-    test:
+  test:
     runs-on: macos-15 # 2026년 최신 Xcode 환경
     steps:
-        - uses: actions/checkout@v4
-        - name: Set up Ruby
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-            ruby-version: '3.2'
-            bundler-cache: true
+          ruby-version: '3.2'
+          bundler-cache: true
             
-        - name: Run Fastlane Test
+      - name: Run Fastlane Test
         run: bundle exec fastlane test
