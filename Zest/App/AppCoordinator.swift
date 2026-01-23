@@ -40,7 +40,7 @@ final class AppCoordinator: ObservableObject {
     }
     
     private func observeAuthChanges() {
-        authStateTask = authRepository.observeAuthStateChanges { [weak self] isAuthenticated in
+        authStateTask = authRepository.observeAuthStateChanges { @MainActor [weak self] isAuthenticated in
             guard let self else { return }
             self.currentRoute = isAuthenticated ? .home : .login
         }
