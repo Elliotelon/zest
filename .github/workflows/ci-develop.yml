@@ -1,22 +1,22 @@
 name: Zest CI (Develop)
 
 on:
-  pull_request:
-     branches: [ "develop" ]
+    pull_request:
+        branches: [ "develop" ]
 
 jobs:
-  test:
+    test:
     runs-on: macos-15 # 2026년 최신 Xcode 환경
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up Ruby
+        - uses: actions/checkout@v4
+        - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.2'
-          bundler-cache: true
-    
-    - name: Pre-boot Simulator for iOS 18.6
-      run: |
+            ruby-version: '3.2'
+            bundler-cache: true
+        
+        - name: Pre-boot Simulator for iOS 18.6
+        run: |
         # 1. 사용 가능한 기기 중 iPhone 16 + iOS 18.6 조합의 UDID 추출
         # 만약 OS 버전을 특정하지 않으면 러너에 설치된 엉뚱한 버전을 부팅할 수 있습니다.
         DEVICE_ID=$(xcrun simctl list devices | grep "iPhone 16" | grep "18.6" | grep -v "unavailable" | awk 'NR==1 {print $NF}' | tr -d '()')
@@ -30,5 +30,5 @@ jobs:
         # 이 과정이 없으면 부팅 중에 fastlane scan이 시작되어 signal trap 크래시가 발생합니다.
         xcrun simctl bootedstatus $DEVICE_ID
         
-      - name: Run Fastlane Test
+        - name: Run Fastlane Test
         run: bundle exec fastlane test
