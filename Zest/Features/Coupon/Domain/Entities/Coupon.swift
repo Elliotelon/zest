@@ -8,7 +8,7 @@
 import Foundation
 
 /// 쿠폰 엔티티
-struct Coupon: Identifiable, Codable, Equatable {
+struct Coupon: Identifiable, Codable, Equatable, Sendable {
     let id: UUID
     let name: String
     let discountRate: Double // 할인율 (예: 10.0 = 10%)
@@ -44,7 +44,7 @@ struct Coupon: Identifiable, Codable, Equatable {
 }
 
 /// 사용자별 쿠폰 발급 내역
-struct UserCoupon: Identifiable, Codable, Equatable {
+struct UserCoupon: Identifiable, Codable, Equatable, Sendable {
     let id: UUID
     let profileId: UUID
     let couponId: UUID

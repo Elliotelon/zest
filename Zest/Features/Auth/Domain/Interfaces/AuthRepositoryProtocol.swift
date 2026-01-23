@@ -8,7 +8,7 @@
 import AuthenticationServices
 import Supabase
 
-protocol AuthRepositoryProtocol {
+protocol AuthRepositoryProtocol: Sendable {
     func signInWithSupabase(credential: ASAuthorizationAppleIDCredential) async throws
     func checkSession() async throws -> Bool
     func hasSession() async throws -> Session?
