@@ -1,8 +1,9 @@
 name: Zest CD (Main)
 
 on:
-  push:
-    branches: [ "main" ]
+  pull_request:
+     branches: [ "main" ]
+
 
 jobs:
   deploy:
