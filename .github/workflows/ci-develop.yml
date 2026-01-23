@@ -26,4 +26,7 @@ jobs:
             ${{ runner.os }}-xcode-deriveddata-
             
       - name: Run Fastlane Test
+        env:
+          CI_MODE: true
         run: bundle exec fastlane test
+       
