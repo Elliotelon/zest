@@ -25,10 +25,6 @@ platform :ios do
       fail_build: true,
       prelaunch_simulator: true,
       clean: false,
-      code_coverage: false,
-      should_zip_buildlog: false,
-      result_bundle: false,
-      build_log_performance_report: false,
       xcargs: "-arch x86_64"
     )
   end
