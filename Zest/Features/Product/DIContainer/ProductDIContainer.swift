@@ -8,6 +8,7 @@
 import Supabase
 import SwiftUI
 
+@MainActor
 final class ProductDIContainer {
     private let client = APIService.shared
     private let couponDIContainer = CouponDIContainer()
