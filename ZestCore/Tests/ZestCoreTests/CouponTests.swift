@@ -8,7 +8,7 @@
 import Testing
 @testable import ZestCore
 
-@Suite("쿠폰 로직 테스트")
+@Suite("쿠폰 테스트.")
 @MainActor
 struct CouponTests {
     
@@ -16,7 +16,7 @@ struct CouponTests {
         setupTestEnvironment()
     }
 
-    @Test("쿠폰 목록 로드 성공 확인")
+    @Test("쿠폰 목록 로드 성공 확인.")
     func testLoadCoupons() async throws {
         
     }
