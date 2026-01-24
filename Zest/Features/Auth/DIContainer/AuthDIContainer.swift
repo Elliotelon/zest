@@ -7,6 +7,7 @@
 
 import Supabase
 import SwiftUI
+import ZestCore
 
 @MainActor
 final class AuthDIContainer {

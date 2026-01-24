@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		950688082F17447A00CBD018 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 950688072F17447000CBD018 /* .gitignore */; };
 		9598A0E82F1F491E00F9D106 /* .cursorrules in Resources */ = {isa = PBXBuildFile; fileRef = 9598A0E72F1F491400F9D106 /* .cursorrules */; };
+		959C714A2F24904800FBD65C /* ZestCore in Frameworks */ = {isa = PBXBuildFile; productRef = 959C71492F24904800FBD65C /* ZestCore */; };
 		95BFD6F02F1A3704000CE31D /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 95BFD6EF2F1A3704000CE31D /* Supabase */; };
 /* End PBXBuildFile section */
 
@@ -25,8 +26,9 @@
 /* Begin PBXFileReference section */
 		95015D992F1603A30034404F /* Zest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		950688072F17447000CBD018 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		958910D02F23677E003FBD65 /* Zest.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = file; path = Zest.xctestplan; sourceTree = "<group>"; };
+		958910D02F23677E003FBD65 /* Zest.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Zest.xctestplan; sourceTree = "<group>"; };
 		9598A0E72F1F491400F9D106 /* .cursorrules */ = {isa = PBXFileReference; lastKnownFileType = text; path = .cursorrules; sourceTree = "<group>"; };
+		959C71462F248FD200FBD65C /* ZestCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ZestCore; sourceTree = "<group>"; };
 		95D5A1EB2F21057000B4CA5D /* ZestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -72,6 +74,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				95BFD6F02F1A3704000CE31D /* Supabase in Frameworks */,
+				959C714A2F24904800FBD65C /* ZestCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,6 +91,7 @@
 		95015D902F1603A30034404F = {
 			isa = PBXGroup;
 			children = (
+				959C71462F248FD200FBD65C /* ZestCore */,
 				958910D02F23677E003FBD65 /* Zest.xctestplan */,
 				95C540DF2F2207EB00F52044 /* .github */,
 				95C540D62F21F21B00F52044 /* fastlane */,
@@ -95,6 +99,7 @@
 				950688072F17447000CBD018 /* .gitignore */,
 				95015D9B2F1603A30034404F /* Zest */,
 				95D5A1EC2F21057000B4CA5D /* ZestTests */,
+				959C71482F24904800FBD65C /* Frameworks */,
 				95015D9A2F1603A30034404F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -106,6 +111,13 @@
 				95D5A1EB2F21057000B4CA5D /* ZestTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		959C71482F24904800FBD65C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -130,6 +142,7 @@
 			name = Zest;
 			packageProductDependencies = (
 				95BFD6EF2F1A3704000CE31D /* Supabase */,
+				959C71492F24904800FBD65C /* ZestCore */,
 			);
 			productName = Zest;
 			productReference = 95015D992F1603A30034404F /* Zest.app */;
@@ -683,6 +696,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		959C71492F24904800FBD65C /* ZestCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ZestCore;
+		};
 		95BFD6EF2F1A3704000CE31D /* Supabase */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 95BFD6EE2F1A3704000CE31D /* XCRemoteSwiftPackageReference "supabase-swift" */;

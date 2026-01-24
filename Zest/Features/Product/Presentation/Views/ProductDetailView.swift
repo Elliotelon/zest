@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ZestCore
 
 struct ProductDetailView: View {
     @StateObject var viewModel: ProductDetailViewModel
@@ -42,19 +43,19 @@ struct ProductDetailView: View {
             } else if let product = viewModel.product {
                 VStack(alignment: .leading, spacing: 0) {
                     // 상품 이미지
-//                    AsyncImage(url: URL(string: product.imageUrl)) { image in
-//                        image
-//                            .resizable()
-//                            .scaledToFill()
-//                    } placeholder: {
-//                        Rectangle()
-//                            .fill(Color.gray.opacity(0.3))
-//                            .overlay(
-//                                ProgressView()
-//                            )
-//                    }
-//                    .frame(height: 300)
-//                    .clipped()
+                    //                    AsyncImage(url: URL(string: product.imageUrl)) { image in
+                    //                        image
+                    //                            .resizable()
+                    //                            .scaledToFill()
+                    //                    } placeholder: {
+                    //                        Rectangle()
+                    //                            .fill(Color.gray.opacity(0.3))
+                    //                            .overlay(
+                    //                                ProgressView()
+                    //                            )
+                    //                    }
+                    //                    .frame(height: 300)
+                    //                    .clipped()
                     
                     VStack(alignment: .leading, spacing: 16) {
                         // 상품명
@@ -289,7 +290,7 @@ struct ProductDetailCouponCardView: View {
 }
 
 #Preview {
-    let productRepository = ProductRepository(client: APIService.shared)
+    let productRepository = ProductRepository(client: APIService.shared.client)
     let productUseCase = FetchProductDetailUseCase(repository: productRepository)
     let productViewModel = ProductDetailViewModel(
         productId: UUID(),
@@ -299,7 +300,7 @@ struct ProductDetailCouponCardView: View {
     let couponDIContainer = CouponDIContainer()
     let couponViewModel = couponDIContainer.makeCouponViewModel()
     
-    return NavigationView {
+    NavigationView {
         ProductDetailView(
             viewModel: productViewModel,
             couponViewModel: couponViewModel,

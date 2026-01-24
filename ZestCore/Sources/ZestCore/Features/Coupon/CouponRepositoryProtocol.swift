@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol CouponRepositoryProtocol: Sendable {
+public protocol CouponRepositoryProtocol: Sendable {
     /// 사용 가능한 모든 쿠폰 목록을 가져옵니다.
     func fetchAvailableCoupons() async throws -> [Coupon]
     
