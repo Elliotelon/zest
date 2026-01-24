@@ -6,15 +6,31 @@
 //
 
 import SwiftUI
+import ZestCore
 
 @main
 struct ZestApp: App {
     
-    private let appDIContainer = AppDIContainer()
-   
+    @State private var appDIContainer: AppDIContainer?
+    
+    init() {
+        APIService.shared.setup(
+            url: Env.supabaseURL,
+            key: Env.supabaseAnonKey
+        )
+    }
+    
     var body: some Scene {
         WindowGroup {
-            appDIContainer.makeRootView()
+            if let container = appDIContainer {
+                container.makeRootView()
+            } else {
+                Color.clear
+                    .onAppear {
+                        // 4. 최초 등장 시점에 컨테이너를 생성하여 nil 크래시를 방지합니다.
+                        appDIContainer = AppDIContainer()
+                    }
+            }
         }
     }
 }

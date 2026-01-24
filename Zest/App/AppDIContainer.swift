@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import ZestCore
 
 /// 앱 레벨 의존성 조립 (Repository -> UseCase -> Coordinator -> RootView)
 final class AppDIContainer {
-    private let client = APIService.shared
+    private let client = APIService.shared.client
     
     private lazy var authRepository: AuthRepositoryProtocol = {
         AuthRepository(client: client)

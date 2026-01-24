@@ -1,20 +1,34 @@
 name: Zest CI (Develop)
 
 on:
-  push:
+  pull_request:
     branches: [ "develop" ]
 
 jobs:
   test:
-    runs-on: macos-15 # 2026년 최신 Xcode 환경
+    runs-on: macos-15
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
           bundler-cache: true
-      - name: Install Pods
-        run: pod install
-      - name: Run Fastlane Test
-        run: bundle exec fastlane test
+          
+      - name: Cache DerivedData
+        uses: actions/cache@v4
+        with:
+          path: ~/Library/Developer/Xcode/DerivedData
+          key: ${{ runner.os }}-xcode-deriveddata-${{ hashFiles('**/Project.pbxproj') }}
+          restore-keys: |
+            ${{ runner.os }}-xcode-deriveddata-
+            
+      - name: Create xcconfig for CI
+        run: |
+          echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" > Zest/Configs/Debug.xcconfig
+          echo "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}" >> Zest/Configs/Debug.xcconfig
+        
+      - name: Run ZestCore Logic Tests
+        run: swift test --package-path ./ZestCore

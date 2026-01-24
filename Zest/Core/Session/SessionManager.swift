@@ -8,6 +8,7 @@
 import Foundation
 import Supabase
 import Combine
+import ZestCore
 
 /// 전역 세션 관리자
 /// 앱 전체에서 현재 로그인된 사용자의 세션 정보를 관리합니다.
@@ -21,7 +22,7 @@ final class SessionManager: ObservableObject {
     private let client: SupabaseClient
     
     private init() {
-        self.client = APIService.shared
+        self.client = APIService.shared.client
     }
     
     /// 현재 세션 정보를 가져옵니다.

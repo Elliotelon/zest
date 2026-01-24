@@ -7,9 +7,10 @@
 
 import Supabase
 import SwiftUI
+import ZestCore
 
 final class ProductDIContainer {
-    private let client = APIService.shared
+    private let client = APIService.shared.client
     private let couponDIContainer = CouponDIContainer()
     
     func makeProductListView() -> some View {

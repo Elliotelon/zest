@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import ZestCore
 
 /// 앱 시작 시 세션을 확인하고, 이후 Auth 상태 변화를 감지해 화면을 전환하는 코디네이터
 @MainActor

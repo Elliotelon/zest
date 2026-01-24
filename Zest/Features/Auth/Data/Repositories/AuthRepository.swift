@@ -8,6 +8,7 @@
 import Foundation
 import AuthenticationServices
 import Supabase
+import ZestCore
 
 final class AuthRepository: AuthRepositoryProtocol {
     private let client: SupabaseClient

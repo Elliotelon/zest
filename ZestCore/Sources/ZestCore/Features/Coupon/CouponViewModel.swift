@@ -9,17 +9,17 @@ import SwiftUI
 import Combine
 
 @MainActor
-final class CouponViewModel: ObservableObject {
-    @Published var availableCoupons: [Coupon] = []
-    @Published var userCoupons: [UserCoupon] = []
-    @Published var isLoading = false
-    @Published var isIssuing = false // 쿠폰 발급 중 여부 (중복 방지)
-    @Published var errorMessage: String?
-    @Published var successMessage: String?
+public final class CouponViewModel: ObservableObject {
+    @Published public var availableCoupons: [Coupon] = []
+    @Published public var userCoupons: [UserCoupon] = []
+    @Published public var isLoading = false
+    @Published public var isIssuing = false // 쿠폰 발급 중 여부 (중복 방지)
+    @Published public var errorMessage: String?
+    @Published public var successMessage: String?
     
-    private let fetchAvailableCouponsUseCase: FetchAvailableCouponsUseCase
-    private let fetchUserCouponsUseCase: FetchUserCouponsUseCase
-    let issueCouponUseCase: IssueCouponUseCase // 테스트를 위해 internal
+    public let fetchAvailableCouponsUseCase: FetchAvailableCouponsUseCase
+    public let fetchUserCouponsUseCase: FetchUserCouponsUseCase
+    public let issueCouponUseCase: IssueCouponUseCase
     
     init(
         fetchAvailableCouponsUseCase: FetchAvailableCouponsUseCase,
@@ -32,7 +32,7 @@ final class CouponViewModel: ObservableObject {
     }
     
     /// 사용 가능한 쿠폰 목록을 로드합니다.
-    func loadAvailableCoupons() async {
+    public func loadAvailableCoupons() async {
         guard !isLoading else { return }
         
         isLoading = true
@@ -50,7 +50,7 @@ final class CouponViewModel: ObservableObject {
     }
     
     /// 사용자가 보유한 쿠폰 목록을 로드합니다.
-    func loadUserCoupons(profileId: UUID) async {
+    public func loadUserCoupons(profileId: UUID) async {
         do {
             userCoupons = try await fetchUserCouponsUseCase.execute(profileId: profileId)
             print("✅ 내 쿠폰 목록 로드 성공: \(userCoupons.count)개")
@@ -64,7 +64,7 @@ final class CouponViewModel: ObservableObject {
     /// - Parameters:
     ///   - profileId: 사용자 ID
     ///   - couponId: 쿠폰 ID
-    func issueCoupon(profileId: UUID, couponId: UUID) async {
+    public func issueCoupon(profileId: UUID, couponId: UUID) async {
         // 중복 요청 방지
         guard !isIssuing else {
             print("⚠️ 이미 쿠폰 발급 처리 중입니다.")
@@ -101,7 +101,7 @@ final class CouponViewModel: ObservableObject {
     }
     
     /// 특정 쿠폰을 이미 보유하고 있는지 확인합니다.
-    func hasUserCoupon(couponId: UUID) -> Bool {
+    public func hasUserCoupon(couponId: UUID) -> Bool {
         return userCoupons.contains { $0.couponId == couponId }
     }
 }

@@ -1,5 +1,6 @@
 import SwiftUI
 import Supabase
+import ZestCore
 
 /// AppCoordinator의 currentRoute에 따라 로그인/홈 화면을 분기하는 루트 뷰
 struct RootView: View {

@@ -7,6 +7,7 @@
 
 import Supabase
 import SwiftUI
+import ZestCore
 
 final class AuthDIContainer {
     private let repository: AuthRepositoryProtocol

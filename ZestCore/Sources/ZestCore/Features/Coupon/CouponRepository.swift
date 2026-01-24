@@ -8,14 +8,14 @@
 import Foundation
 import Supabase
 
-final class CouponRepository: CouponRepositoryProtocol {
+public final class CouponRepository: CouponRepositoryProtocol {
     private let client: SupabaseClient
     
-    init(client: SupabaseClient) {
+    public init(client: SupabaseClient) {
         self.client = client
     }
     
-    func fetchAvailableCoupons() async throws -> [Coupon] {
+    public func fetchAvailableCoupons() async throws -> [Coupon] {
         let response: [CouponDTO] = try await client
             .from("coupons")
             .select()
@@ -27,7 +27,7 @@ final class CouponRepository: CouponRepositoryProtocol {
         return response.map { $0.toEntity() }
     }
     
-    func fetchCoupon(id: UUID) async throws -> Coupon {
+    public func fetchCoupon(id: UUID) async throws -> Coupon {
         let response: CouponDTO = try await client
             .from("coupons")
             .select()
@@ -39,7 +39,7 @@ final class CouponRepository: CouponRepositoryProtocol {
         return response.toEntity()
     }
     
-    func issueCoupon(profileId: UUID, couponId: UUID) async throws -> (success: Bool, message: String) {
+    public func issueCoupon(profileId: UUID, couponId: UUID) async throws -> (success: Bool, message: String) {
         // Supabase RPC 함수 호출 (동시성 제어가 적용된 함수)
         let response: IssueCouponResponseDTO = try await client
             .rpc("issue_coupon", params: [
@@ -72,7 +72,7 @@ final class CouponRepository: CouponRepositoryProtocol {
         }
     }
     
-    func fetchUserCoupons(profileId: UUID) async throws -> [UserCoupon] {
+    public func fetchUserCoupons(profileId: UUID) async throws -> [UserCoupon] {
         let response: [UserCouponDTO] = try await client
             .from("profiles_coupons")
             .select()
@@ -84,7 +84,7 @@ final class CouponRepository: CouponRepositoryProtocol {
         return response.map { $0.toEntity() }
     }
     
-    func useCoupon(userCouponId: UUID, productId: UUID) async throws {
+    public func useCoupon(userCouponId: UUID, productId: UUID) async throws {
         try await client
             .from("profiles_coupons")
             .update([
