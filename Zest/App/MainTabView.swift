@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ZestCore
 
 struct MainTabView: View {
     let productDIContainer: ProductDIContainer

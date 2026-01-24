@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import ZestCore
 
 @MainActor
 final class ProductDetailViewModel: ObservableObject {

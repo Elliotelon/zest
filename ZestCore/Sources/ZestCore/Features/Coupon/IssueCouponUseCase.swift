@@ -8,10 +8,10 @@
 import Foundation
 
 /// 쿠폰 발급 UseCase (동시성 제어 적용)
-final class IssueCouponUseCase: Sendable {
-    private let repository: CouponRepositoryProtocol
+public final class IssueCouponUseCase: Sendable {
+    private let repository: any CouponRepositoryProtocol
     
-    init(repository: CouponRepositoryProtocol) {
+    public init(repository: some CouponRepositoryProtocol) {
         self.repository = repository
     }
     
@@ -20,7 +20,7 @@ final class IssueCouponUseCase: Sendable {
     ///   - profileId: 사용자 ID
     ///   - couponId: 쿠폰 ID
     /// - Returns: (성공 여부, 메시지)
-    func execute(profileId: UUID, couponId: UUID) async throws -> (success: Bool, message: String) {
+    public func execute(profileId: UUID, couponId: UUID) async throws -> (success: Bool, message: String) {
         return try await repository.issueCoupon(profileId: profileId, couponId: couponId)
     }
 }

@@ -8,14 +8,14 @@
 import Foundation
 
 /// 사용 가능한 쿠폰 목록을 가져오는 UseCase
-final class FetchAvailableCouponsUseCase: Sendable {
-    private let repository: CouponRepositoryProtocol
+public final class FetchAvailableCouponsUseCase: Sendable {
+    private let repository: any CouponRepositoryProtocol
     
-    init(repository: CouponRepositoryProtocol) {
+    public init(repository: some CouponRepositoryProtocol) {
         self.repository = repository
     }
     
-    func execute() async throws -> [Coupon] {
+    public func execute() async throws -> [Coupon] {
         return try await repository.fetchAvailableCoupons()
     }
 }

@@ -25,5 +25,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-xcode-deriveddata-
             
-      - name: Run Fastlane Test
-        run: bundle exec fastlane test
+      - name: Create xcconfig for CI
+        run: |
+          echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" > Zest/Configs/Debug.xcconfig
+          echo "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}" >> Zest/Configs/Debug.xcconfig
+        
+      - name: Run ZestCore Logic Tests
+        run: swift test --package-path ./ZestCore

@@ -23,7 +23,7 @@ struct Env {
     }
     
     static var supabaseURL: URL {
-        guard let urlString = Bundle.main.infoDictionary?["SUPABASE_URL"] as? String,
+        guard let urlString = Bundle.main.object(forInfoDictionaryKey: "SUPABASE_URL") as? String,
               let url = URL(string: "https://\(urlString)") else {
             fatalError("SUPABASE_URL 설정이 잘못되었습니다.")
         }
@@ -31,7 +31,7 @@ struct Env {
     }
     
     static var supabaseAnonKey: String {
-        guard let key = Bundle.main.infoDictionary?["SUPABASE_ANON_KEY"] as? String else {
+        guard let key = Bundle.main.object(forInfoDictionaryKey: "SUPABASE_ANON_KEY") as? String else {
             fatalError("SUPABASE_ANON_KEY 설정이 없습니다.")
         }
         return key
