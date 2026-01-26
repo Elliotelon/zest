@@ -17,14 +17,6 @@ jobs:
           ruby-version: '3.2'
           bundler-cache: true
           
-      # 1️⃣ SSH 키 파일 생성 (원본 개인키 사용)
-      - name: Write SSH private key
-      run: |
-         mkdir -p ~/.ssh
-         cat << 'EOF' > ~/.ssh/id_rsa_ci 
-${{ secrets.SSH_PRIVATE_KEY }}
-EOF
-         chmod 600 ~/.ssh/id_rsa_ci
 
       # 2️⃣ ssh-agent 실행 및 키 등록
       - name: Start ssh-agent and add key
