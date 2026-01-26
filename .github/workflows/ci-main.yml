@@ -19,19 +19,19 @@ jobs:
           ruby-version: '3.2'
           bundler-cache: true
 
-      # 2️⃣ SSH 키 파일 생성 (Base64로 안전하게 복호화)
-      - name: Write SSH private key
+      # 2️⃣ SSH 키 파일 생성 및 PEM 변환
+      - name: Write SSH private key and convert to PEM
         run: |
           mkdir -p ~/.ssh
-          base64 --decode <<< "${{ secrets.SSH_PRIVATE_KEY_BASE64 }}" > ~/.ssh/id_rsa_ci
+          echo "${{ secrets.SSH_PRIVATE_KEY_BASE64 }}" | base64 --decode > ~/.ssh/id_rsa_ci
           chmod 600 ~/.ssh/id_rsa_ci
+          ssh-keygen -p -m PEM -f ~/.ssh/id_rsa_ci -P "" -N ""
 
       # 3️⃣ ssh-agent 실행 및 키 등록
       - name: Start ssh-agent and add key
         run: |
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_rsa_ci
-          # 등록된 키 확인
           ssh-add -l
 
       # 4️⃣ Fastlane match + 빌드 + TestFlight 업로드
