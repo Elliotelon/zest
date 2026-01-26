@@ -25,8 +25,8 @@ jobs:
           set -e
           mkdir -p ~/.ssh
           
-          # Secrets 내용 그대로 파일로 저장 (Base64 제거)
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa_ci
+          # Secrets 내용 그대로 파일로 저장
+          printf "%s\n" "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa_ci
           chmod 600 ~/.ssh/id_rsa_ci
 
           # ssh-agent 시작 및 키 등록
@@ -34,10 +34,11 @@ jobs:
           ssh-add ~/.ssh/id_rsa_ci
 
           # 등록된 키 확인
+          echo "===== Registered SSH Keys ====="
           ssh-add -l
 
           # 공개키 확인 (디버깅용)
-          echo "Public key fingerprint:"
+          echo "===== Public key fingerprint ====="
           ssh-keygen -y -f ~/.ssh/id_rsa_ci
 
       # 3️⃣ Fastlane match + 빌드 + TestFlight 업로드
