@@ -23,7 +23,7 @@ jobs:
       - name: Write SSH private key and convert to PEM
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY_BASE64 }}" | base64 --decode > ~/.ssh/id_rsa_ci
+          printf "%s" "${{ secrets.SSH_PRIVATE_KEY_BASE64 }}" | base64 --decode > ~/.ssh/id_rsa_ci
           chmod 600 ~/.ssh/id_rsa_ci
           ssh-keygen -p -m PEM -f ~/.ssh/id_rsa_ci -P "" -N ""
 
