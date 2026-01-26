@@ -19,27 +19,6 @@ jobs:
           ruby-version: '3.2'
           bundler-cache: true
 
-      # 2️⃣ SSH private key 복원 및 ssh-agent 등록
-      - name: Set up SSH key
-        run: |
-          set -e
-          mkdir -p ~/.ssh
-
-          # Secrets에 저장된 Base64 키를 파일로 복원
-          printf "%s" "${{ secrets.SSH_PRIVATE_KEY_BASE64 }}" | base64 --decode > ~/.ssh/id_rsa_ci
-          
-          # 권한 설정
-          chmod 600 ~/.ssh/id_rsa_ci
-
-          # ssh-agent 시작 및 키 등록
-          eval "$(ssh-agent -s)"
-          ssh-add ~/.ssh/id_rsa_ci
-
-          # 등록된 키 확인 (디버깅용)
-          ssh-add -l
-          echo "Public key fingerprint:"
-          ssh-keygen -y -f ~/.ssh/id_rsa_ci
-
       # 3️⃣ Fastlane match + 빌드 + TestFlight 업로드
       - name: Run match & build + upload to TestFlight
         env:
