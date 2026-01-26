@@ -21,28 +21,25 @@ jobs:
       - name: Decode SSH private key
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY}}" | base64 --decode > ~/.ssh/id_rsa_ci
+          echo "${{ secrets.SSH_PRIVATE_KEY_BASE64 }}" | base64 --decode > ~/.ssh/id_rsa_ci
           chmod 600 ~/.ssh/id_rsa_ci
 
-      # 2️⃣ SSH key 로딩 (match repo가 private & SSH일 경우)
-      - name: Setup SSH key for match repo
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ~/.ssh/id_rsa_ci
+      # 2️⃣ ssh-agent 직접 실행 + key 등록 (⭐ 핵심 수정)
+      - name: Start ssh-agent and add key
+        run: |
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/id_rsa_ci
 
       # 3️⃣ Fastlane match + 빌드 + TestFlight 업로드
       - name: Run match & build + upload to TestFlight
         env:
-          # match 관련
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
 
-          # App Store Connect API Key
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_API_KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}
 
-          # Fastlane 앱 업로드용 비밀번호 (2FA)
           FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
         run: |
           bundle exec fastlane beta
