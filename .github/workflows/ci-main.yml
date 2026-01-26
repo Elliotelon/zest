@@ -22,9 +22,9 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           cat << 'EOF' > ~/.ssh/id_rsa_ci
-${{ secrets.SSH_PRIVATE_KEY }}
-EOF
-    chmod 600 ~/.ssh/id_rsa_ci
+          ${{ secrets.SSH_PRIVATE_KEY }}
+          EOF
+          chmod 600 ~/.ssh/id_rsa_ci
         
         # 2️⃣ ssh-agent 실행 및 키 등록
         - name: Start ssh-agent and add key
