@@ -24,8 +24,9 @@ jobs:
         run: |
           set -e
           mkdir -p ~/.ssh
-          # Secrets 디코딩 → 파일 생성
-          printf "%s" "${{ secrets.SSH_PRIVATE_KEY_BASE64 }}" | base64 --decode > ~/.ssh/id_rsa_ci
+          
+          # Secrets 내용 그대로 파일로 저장 (Base64 제거)
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa_ci
           chmod 600 ~/.ssh/id_rsa_ci
 
           # ssh-agent 시작 및 키 등록
