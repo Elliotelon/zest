@@ -23,7 +23,7 @@ jobs:
       - name: Write SSH private key
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY_BASE64 }}" | tr -d '\r' | base64 --decode >. ~/.ssh/id_rsa_ci
+          base64 --decode <<< "${{ secrets.SSH_PRIVATE_KEY_BASE64 }}" > ~/.ssh/id_rsa_ci
           chmod.600 ~/.ssh/id_rsa_ci
 
       # 3️⃣ ssh-agent 실행 및 키 등록
