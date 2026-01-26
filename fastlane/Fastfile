@@ -9,17 +9,14 @@ platform :ios do
     if !is_ci
       xcode_select("/Applications/Xcode.app")
     end
-
   end
 
-  desc "유닛 테스트 실행 (CI용)"
+  desc "유닛 테스트 실행"
   lane :test do
-  
     sh("swift test --package-path ../ZestCore")
 
     ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "100"
     ENV["FASTLANE_XCODEBUILD_SETTINGS_RETRIES"] = "5"
-    
     
     scan(
       project: "Zest.xcodeproj", # Workspace 에러 방지
@@ -31,18 +28,11 @@ platform :ios do
     )
   end
 
-  desc "TestFlight에 베타 빌드 배포 (CD용)"
+  desc "TestFlight에 베타 빌드 배포"
   lane :beta do
     UI.user_error!("APP_STORE_CONNECT_API_KEY_ID missing") if ENV["APP_STORE_CONNECT_API_KEY_ID"].nil?
 
-    # 0️⃣ match로 코드 서명 설정 적용
-    match(
-      type: "appstore",
-      readonly: true,
-      git_url: ENV["MATCH_GIT_URL"]
-    )
-
-    # 1️⃣ App Store Connect API Key 인증 설정
+    # 0️⃣ App Store Connect API Key 인증 설정
     api_key = app_store_connect_api_key(
       key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
       issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
@@ -50,20 +40,24 @@ platform :ios do
       is_key_content_base64: false
     )
 
-    # 2️⃣ 빌드 번호 자동 증가
+    # 1️⃣ 빌드 번호 자동 증가
     increment_build_number(xcodeproj: "Zest.xcodeproj")
 
-    # 3️⃣ 아카이브 빌드
+    # 2️⃣ 아카이브 빌드 (Manual Signing)
     build_app(
       project: "Zest.xcodeproj",
       scheme: "Zest",
       include_bitcode: false,
       export_method: "app-store",
-      export_xcargs: "-allowProvisioningUpdates",
-      export_team_id: "A3GL2XU4F8"
+      export_team_id: "A3GL2XU4F8",
+      export_options: {
+        provisioningProfiles: {
+          "com.elliot.Zest" => "Zest-Ci"   # 수동 프로필 이름
+        }
+      }
     )
 
-    # 4️⃣ TestFlight 업로드
+    # 3️⃣ TestFlight 업로드
     upload_to_testflight(
       api_key: api_key,
       skip_waiting_for_build_processing: true,
@@ -72,7 +66,7 @@ platform :ios do
   end
 
   error do |lane, exception|
-    # 필요 시 Slack/Notion/Email 알림 추가
+    puts "🚨 Fastlane error: #{exception.message}"
+    # 필요 시 Slack/Notion/Email 알림 추가 가능
   end
 end
-
