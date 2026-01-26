@@ -35,6 +35,10 @@ jobs:
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_rsa_ci
 
+          # GitHub 호스트 등록 (known_hosts)
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
           # 등록된 키 확인 (디버깅용)
           ssh-add -l
           echo "Public key fingerprint:"
@@ -51,4 +55,8 @@ jobs:
           FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
         run: |
           set -e
+          # Fastlane 실행 전 SSH 인증 테스트 (디버깅용)
+          echo "Testing SSH access to match repo..."
+          ssh -T git@github.com || true
+          
           bundle exec fastlane beta
