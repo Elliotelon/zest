@@ -26,6 +26,7 @@
 /* Begin PBXFileReference section */
 		95015D992F1603A30034404F /* Zest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		950688072F17447000CBD018 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		95202BD02F27B085001029D1 /* Zest copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Zest copy-Info.plist"; path = "/Users/minkyu/Developer/IOS/Zest/Zest copy-Info.plist"; sourceTree = "<absolute>"; };
 		958910D02F23677E003FBD65 /* Zest.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Zest.xctestplan; sourceTree = "<group>"; };
 		9598A0E72F1F491400F9D106 /* .cursorrules */ = {isa = PBXFileReference; lastKnownFileType = text; path = .cursorrules; sourceTree = "<group>"; };
 		959C71462F248FD200FBD65C /* ZestCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ZestCore; sourceTree = "<group>"; };
@@ -100,6 +101,7 @@
 				95015D9B2F1603A30034404F /* Zest */,
 				95D5A1EC2F21057000B4CA5D /* ZestTests */,
 				959C71482F24904800FBD65C /* Frameworks */,
+				95202BD02F27B085001029D1 /* Zest copy-Info.plist */,
 				95015D9A2F1603A30034404F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -442,7 +444,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Zest/Zest.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = "";
@@ -464,7 +466,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.elliot.Zest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Zest Dev Profile (수동)";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Zest CI (수동)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -549,7 +551,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Zest/Zest.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = "";
@@ -571,7 +573,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.elliot.Zest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Zest Dev Profile (수동)";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Zest CI (수동)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
