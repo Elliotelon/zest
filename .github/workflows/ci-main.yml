@@ -21,14 +21,14 @@ jobs:
           ruby-version: '3.2'
           bundler-cache: true
 
-      # 2️⃣ SSH agent에 match repo용 키 등록
-      - name: Set up SSH key for match
+      # 2️⃣ SSH agent에 match repo용 키 등록 (Fastlane 실행 전 반드시)
+      - name: Set up SSH key for match repo
         run: |
-          set -e
           mkdir -p ~/.ssh
           echo "${{ secrets.MATCH_DEPLOY_KEY }}" > ~/.ssh/id_rsa_match
           chmod 600 ~/.ssh/id_rsa_match
 
+          # SSH agent 시작 후 키 등록
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_rsa_match
 
@@ -36,10 +36,13 @@ jobs:
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
 
-          # 확인
+          # 디버깅용: 등록된 키 확인
           ssh-add -l
           echo "Public key fingerprint for match key:"
           ssh-keygen -y -f ~/.ssh/id_rsa_match
+
+          # 강제 환경 변수로 SSH 키 사용 지정
+          export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa_match -o StrictHostKeyChecking=no"
 
       # 3️⃣ Fastlane match + 빌드 + TestFlight 업로드
       - name: Run match & build + upload to TestFlight
@@ -52,7 +55,6 @@ jobs:
           FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
         run: |
           set -e
-
           echo "Testing SSH access to GitHub for match repo..."
           ssh -T git@github.com || true
 
