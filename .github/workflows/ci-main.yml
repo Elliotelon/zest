@@ -23,16 +23,26 @@ jobs:
       - name: Write SSH private key and convert to PEM
         run: |
           mkdir -p ~/.ssh
+          # Secrets 디코딩 → 파일 생성
           printf "%s" "${{ secrets.SSH_PRIVATE_KEY_BASE64 }}" | base64 --decode > ~/.ssh/id_rsa_ci
           chmod 600 ~/.ssh/id_rsa_ci
+          # PEM 변환
           ssh-keygen -p -m PEM -f ~/.ssh/id_rsa_ci -P "" -N ""
+          # 포맷 확인 (디버깅용)
+          echo "===== SSH KEY BEGIN ====="
+          head -n 5 ~/.ssh/id_rsa_ci
+          echo "===== SSH KEY END ====="
+          tail -n 5 ~/.ssh/id_rsa_ci
 
       # 3️⃣ ssh-agent 실행 및 키 등록
       - name: Start ssh-agent and add key
         run: |
+          set -e  # 실패 시 바로 종료
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_rsa_ci
           ssh-add -l
+          # 공개키 확인 (선택)
+          ssh-keygen -y -f ~/.ssh/id_rsa_ci
 
       # 4️⃣ Fastlane match + 빌드 + TestFlight 업로드
       - name: Run match & build + upload to TestFlight
