@@ -2,24 +2,40 @@ name: Zest CD (Main)
 
 on:
   pull_request:
-     branches: [ "main" ]
-
+    branches: [ "main" ]
 
 jobs:
   deploy:
-    runs-on: macos-15
+    runs-on: macos-latest
+
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
           bundler-cache: true
-          
-      - name: Deploy to TestFlight
+
+      # SSH key 로딩 (match repo가 private & SSH일 경우)
+      - name: Setup SSH key for match repo
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Run match & build + upload to TestFlight
         env:
-          # GitHub Secrets에 저장한 이름과 정확히 일치해야 함
+          # match 관련
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}        # match repo 주소
+          
+          # App Store Connect API Key (현재 사용하시는 방식)
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_API_KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}
-        run: bundle exec fastlane beta
+          
+          # Fastlane 앱 업로드용 비밀번호 (2FA 고려)
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
+        run: |
+          bundle exec fastlane beta
+

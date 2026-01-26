@@ -91,6 +91,23 @@ fastlane/*.cer
 fastlane/*.p12
 fastlane/Appfile.last_run
 
+# fastlane match - certificates & profiles (절대 커밋 금지)
+*.cer
+*.p12
+*.mobileprovision
+*.provisionprofile
+*.pem
+*.der
+
+# keychain (match 실행 시 생성될 수 있음)
+*.keychain
+*.keychain-db
+
+# fastlane sensitive env
+fastlane/.env
+fastlane/.env.*
+
+
 #.p8 파일 제외
 *.p8
 
