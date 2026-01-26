@@ -23,8 +23,7 @@ final class AppDIContainer {
     
     private lazy var appCoordinator: AppCoordinator = {
         AppCoordinator(
-            checkSessionUseCase: checkSessionUseCase,
-            authRepository: authRepository
+            
         )
     }()
     

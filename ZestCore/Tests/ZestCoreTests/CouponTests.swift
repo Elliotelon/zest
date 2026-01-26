@@ -132,7 +132,7 @@ struct CouponTests {
         #expect(sut.successMessage == nil)
     }
     
-    // MARK: - 시나리오 6: UI 상태 관리 (ViewModel 로딩)
+    // MARK: - 시나리오 5: UI 상태 관리 (ViewModel 로딩)
     
     @Test("데이터 로딩 시 isLoading 상태 변화 확인")
     func viewModelLoadingStates() async throws {
