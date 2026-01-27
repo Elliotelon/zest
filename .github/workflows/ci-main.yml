@@ -36,23 +36,17 @@ jobs:
 
           ssh-add -l
 
-      # 🔥 3️⃣ CI keychain 생성 + codesign 권한 (필수)
-      - name: Setup CI Keychain for codesigning
+      # 3️⃣ CI keychain 생성
+      - name: Setup CI Keychain
         run: |
           KEYCHAIN=ci.keychain
           KEYCHAIN_PASSWORD=""
 
           security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
-
-          security list-keychains -d user -s "$KEYCHAIN"
+          security list-keychains -d user -s "$KEYCHAIN" login.keychain
           security default-keychain -s "$KEYCHAIN"
-
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
           security set-keychain-settings -lut 21600 "$KEYCHAIN"
-
-          security set-key-partition-list \
-            -S apple-tool:,apple:,codesign: \
-            -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
 
       # 4️⃣ Fastlane match + 빌드 + TestFlight 업로드
       - name: Run match & build + upload to TestFlight
@@ -66,5 +60,11 @@ jobs:
           GIT_SSH_COMMAND: ssh -i ~/.ssh/id_rsa_match -o StrictHostKeyChecking=no
         run: |
           set -e
-          ssh -T git@github.com || true
           bundle exec fastlane beta
+
+      # 5️⃣ 🔥 codesign 권한 부여 (인증서 설치 이후!)
+      - name: Fix codesign keychain permission
+        run: |
+          security set-key-partition-list \
+            -S apple-tool:,apple:,codesign: \
+            -s -k "" ci.keychain
