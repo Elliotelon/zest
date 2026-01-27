@@ -27,11 +27,20 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.MATCH_DEPLOY_KEY }}" > ~/.ssh/id_rsa_match
           chmod 600 ~/.ssh/id_rsa_match
+
+          # ssh-agent 시작 및 키 등록
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_rsa_match
+          ssh-add -l
+
+          # known_hosts 및 SSH config 설정
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
-          ssh-add -l
+          echo "Host github.com
+            HostName github.com
+            IdentityFile ~/.ssh/id_rsa_match
+            StrictHostKeyChecking no" >> ~/.ssh/config
+          chmod 600 ~/.ssh/config
 
       # 3️⃣ CI Keychain 생성
       - name: Setup CI Keychain
@@ -46,7 +55,7 @@ jobs:
         env:
           KEYCHAIN_PASSWORD: ci_pass
 
-      # 4️⃣ match 실행 (ci.keychain에 설치)
+      # 4️⃣ match 실행 (ci.keychain에 설치, readonly)
       - name: Run fastlane match
         env:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
@@ -55,9 +64,15 @@ jobs:
           KEYCHAIN_PASSWORD: ci_pass
           GIT_SSH_COMMAND: ssh -i ~/.ssh/id_rsa_match -o StrictHostKeyChecking=no
         run: |
-          bundle exec fastlane match appstore --readonly \
+          # ssh-agent 재시작 + 키 등록 (step 별 환경에서 안전하게)
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/id_rsa_match
+          ssh-add -l
+
+          bundle exec fastlane match appstore \
             --keychain-name "$KEYCHAIN" \
-            --keychain-password "$KEYCHAIN_PASSWORD"
+            --keychain-password "$KEYCHAIN_PASSWORD" \
+            --readonly true
 
       # 5️⃣ codesign 권한 설정
       - name: Fix codesign keychain permission
