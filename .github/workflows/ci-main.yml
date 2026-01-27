@@ -9,31 +9,24 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      # 0️⃣ 앱 레포 checkout
       - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      # 1️⃣ Ruby 환경 세팅
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
           bundler-cache: true
 
-      # 2️⃣ SSH key (match repo 접근용)
       - name: Set up SSH key for match repo
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.MATCH_DEPLOY_KEY }}" > ~/.ssh/id_rsa_match
           chmod 600 ~/.ssh/id_rsa_match
-
-          # ssh-agent 시작 및 키 등록
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_rsa_match
           ssh-add -l
-
-          # known_hosts 및 SSH config 설정
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
           echo "Host github.com
@@ -42,7 +35,6 @@ jobs:
             StrictHostKeyChecking no" >> ~/.ssh/config
           chmod 600 ~/.ssh/config
 
-      # 3️⃣ CI Keychain 생성
       - name: Setup CI Keychain
         run: |
           KEYCHAIN="ci.keychain"
@@ -52,48 +44,35 @@ jobs:
           security default-keychain -s "$KEYCHAIN"
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
           security set-keychain-settings -lut 21600 "$KEYCHAIN"
-        env:
-          KEYCHAIN_PASSWORD: ci_pass
 
-      # 4️⃣ match 실행 (ci.keychain에 설치, write 가능)
       - name: Run fastlane match
         env:
           MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
-          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           KEYCHAIN: ci.keychain
           KEYCHAIN_PASSWORD: ci_pass
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}
           GIT_SSH_COMMAND: ssh -i ~/.ssh/id_rsa_match -o StrictHostKeyChecking=no
         run: |
-          # ssh-agent 재시작 + 키 등록
-          eval "$(ssh-agent -s)"
-          ssh-add ~/.ssh/id_rsa_match
-          ssh-add -l
-
-          # Fastlane match 실행
           bundle exec fastlane match appstore \
             --keychain-name "$KEYCHAIN" \
             --keychain-password "$KEYCHAIN_PASSWORD" \
             --readonly true \
-            --git-branch "master"
-            # --clone-branch-directly true  # 필요 시 uncomment
+            --git-branch "master" \
+            --clone-branch-directly true
 
-      # 5️⃣ codesign 권한 설정
       - name: Fix codesign keychain permission
         run: |
           security set-key-partition-list \
             -S apple-tool:,apple:,codesign: \
             -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
-        env:
-          KEYCHAIN_PASSWORD: ci_pass
-          KEYCHAIN: ci.keychain
 
-      # 6️⃣ 빌드 + TestFlight 업로드
       - name: Build & Upload to TestFlight
         env:
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_API_KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}
-          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
           KEYCHAIN: ci.keychain
           KEYCHAIN_PASSWORD: ci_pass
         run: |

@@ -4,7 +4,6 @@ default_platform(:ios)
 
 platform :ios do
 
-  # 모든 레인 실행 전에 API Key를 설정
   before_all do
     xcode_select("/Applications/Xcode.app") unless is_ci
   end
@@ -15,9 +14,9 @@ platform :ios do
 
     ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "100"
     ENV["FASTLANE_XCODEBUILD_SETTINGS_RETRIES"] = "5"
-    
+
     scan(
-      project: "Zest.xcodeproj", # Workspace 에러 방지
+      project: "Zest.xcodeproj",
       scheme: "Zest",
       destination: "platform=iOS Simulator,name=iPhone 16,OS=18.6",
       fail_build: true,
@@ -26,11 +25,11 @@ platform :ios do
     )
   end
 
-  desc "TestFlight에 베타 빌드 배포"
+  desc "TestFlight에 베타 빌드 배포 (Apple ID 필요 없음)"
   lane :beta do
     UI.user_error!("APP_STORE_CONNECT_API_KEY_ID missing") if ENV["APP_STORE_CONNECT_API_KEY_ID"].nil?
 
-    # 0️⃣ App Store Connect API Key 인증 설정
+    # 0️⃣ App Store Connect API Key 인증
     api_key = app_store_connect_api_key(
       key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
       issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
@@ -41,19 +40,19 @@ platform :ios do
     # 1️⃣ match 실행 (readonly, API Key 사용)
     match(
       type: "appstore",
-      readonly: true,                        # CI에서 인증서 다운로드만 수행
-      git_branch: "master",                   # Match repo 브랜치
+      readonly: true,                        # 다운로드만 수행
+      git_branch: "master",
       git_url: ENV["MATCH_GIT_URL"],
       keychain_name: ENV.fetch("KEYCHAIN", "ci.keychain"),
       keychain_password: ENV.fetch("KEYCHAIN_PASSWORD", "ci_pass"),
       api_key: api_key,                       # Apple API Key 사용
-      clone_branch_directly: true             # repo가 느릴 때 안정성 옵션
+      clone_branch_directly: true
     )
 
     # 2️⃣ 빌드 번호 자동 증가
     increment_build_number(xcodeproj: "Zest.xcodeproj")
 
-    # 3️⃣ 아카이브 빌드 (자동 서명 - match 사용)
+    # 3️⃣ 아카이브 빌드
     build_app(
       project: "Zest.xcodeproj",
       scheme: "Zest",
@@ -72,6 +71,5 @@ platform :ios do
 
   error do |lane, exception|
     puts "🚨 Fastlane error: #{exception.message}"
-    # 필요 시 Slack/Notion/Email 알림 추가 가능
   end
 end
