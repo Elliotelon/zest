@@ -21,7 +21,7 @@ jobs:
           ruby-version: '3.2'
           bundler-cache: true
 
-      # 2️⃣ SSH agent에 match repo용 키 등록
+      # 2️⃣ SSH key (match repo 접근용)
       - name: Set up SSH key for match repo
         run: |
           mkdir -p ~/.ssh
@@ -36,35 +36,42 @@ jobs:
 
           ssh-add -l
 
-      # 3️⃣ CI keychain 생성
+      # 3️⃣ CI Keychain 생성
       - name: Setup CI Keychain
         run: |
           KEYCHAIN=ci.keychain
           KEYCHAIN_PASSWORD=""
 
           security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+
           security list-keychains -d user -s "$KEYCHAIN" login.keychain
           security default-keychain -s "$KEYCHAIN"
+
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
           security set-keychain-settings -lut 21600 "$KEYCHAIN"
 
-      # 4️⃣ Fastlane match + 빌드 + TestFlight 업로드
-      - name: Run match & build + upload to TestFlight
+      # 4️⃣ match만 실행
+      - name: Run fastlane match
         env:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
-          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
-          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
-          APP_STORE_CONNECT_API_KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}
-          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
           GIT_SSH_COMMAND: ssh -i ~/.ssh/id_rsa_match -o StrictHostKeyChecking=no
         run: |
-          set -e
-          bundle exec fastlane beta
+          bundle exec fastlane match appstore
 
-      # 5️⃣ 🔥 codesign 권한 부여 (인증서 설치 이후!)
+      # 5️⃣ 🔥 codesign 권한
       - name: Fix codesign keychain permission
         run: |
           security set-key-partition-list \
             -S apple-tool:,apple:,codesign: \
             -s -k "" ci.keychain
+
+      # 6️⃣ 🚀 빌드 + TestFlight 업로드
+      - name: Build & Upload to TestFlight
+        env:
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
+        run: |
+          bundle exec fastlane beta
