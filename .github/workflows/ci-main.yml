@@ -59,19 +59,17 @@ jobs:
       - name: Run fastlane match
         env:
           MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           KEYCHAIN: ci.keychain
           KEYCHAIN_PASSWORD: ci_pass
           GIT_SSH_COMMAND: ssh -i ~/.ssh/id_rsa_match -o StrictHostKeyChecking=no
         run: |
-          # 1️⃣ MATCH_PASSWORD export (Fastlane에서 바로 사용)
-          export MATCH_PASSWORD="${{ secrets.MATCH_PASSWORD }}"
-
-          # 2️⃣ ssh-agent 재시작 + 키 등록
+          # ssh-agent 재시작 + 키 등록
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_rsa_match
           ssh-add -l
 
-          # 3️⃣ Fastlane match 실행 (readonly false → 설치 가능)
+          # Fastlane match 실행
           bundle exec fastlane match appstore \
             --keychain-name "$KEYCHAIN" \
             --keychain-password "$KEYCHAIN_PASSWORD" \
@@ -96,5 +94,7 @@ jobs:
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_API_KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}
           FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
+          KEYCHAIN: ci.keychain
+          KEYCHAIN_PASSWORD: ci_pass
         run: |
           bundle exec fastlane beta
