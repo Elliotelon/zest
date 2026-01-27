@@ -4,8 +4,7 @@ on:
   pull_request:
     branches: ["develop"]
 
-# PR이 여러 개 동시에 열릴 때
-# 이전 CI는 취소하고 최신 것만 실행
+# PR 여러 개 동시에 들어오면 이전 CI 취소
 concurrency:
   group: zest-ci-develop
   cancel-in-progress: true
@@ -25,20 +24,20 @@ jobs:
         with:
           xcode-version: '26.0'
 
-      # 2️⃣ Ruby 환경 (Fastlane 대비, gem 캐시 포함)
+      # 2️⃣ Ruby 환경 (Fastlane 대비, bundler cache 포함)
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
           bundler-cache: true
 
-      # 3️⃣ Xcode / Swift 버전 로그 (디버깅용)
+      # 3️⃣ Xcode / Swift 버전 로그
       - name: Print tool versions
         run: |
           xcodebuild -version
           swift --version
 
-      # 4️⃣ DerivedData 캐시 (안정성 우선)
+      # 4️⃣ DerivedData 캐시
       - name: Cache DerivedData
         uses: actions/cache@v4
         with:
@@ -47,25 +46,25 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-deriveddata-
 
-      # 5️⃣ CI 전용 xcconfig 생성 (기존 파일 덮어쓰기 ❌)
+      # 5️⃣ CI용 xcconfig 생성 (Git에 없는 파일)
       - name: Create CI xcconfig
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: |
+          mkdir -p Zest/Configs
+
+          # secrets 없으면 실패
           : "${SUPABASE_URL:?Missing SUPABASE_URL}"
           : "${SUPABASE_ANON_KEY:?Missing SUPABASE_ANON_KEY}"
 
-          cp Zest/Configs/Debug.xcconfig Zest/Configs/Debug.ci.xcconfig
-
+          # CI 전용 xcconfig 생성
           {
-            echo ""
-            echo "// ===== CI overrides ====="
+            echo "// ===== CI generated config ====="
             echo "SUPABASE_URL=${SUPABASE_URL}"
             echo "SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}"
-          } >> Zest/Configs/Debug.ci.xcconfig
+          } > Zest/Configs/Debug.ci.xcconfig
 
-      # 6️⃣ ZestCore 로직 테스트
+      # 6️⃣ ZestCore Logic Tests
       - name: Run ZestCore Logic Tests
-        run: |
-          swift test --package-path ./ZestCore
+        run: swift test --package-path ./ZestCore
