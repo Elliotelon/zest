@@ -58,4 +58,17 @@ jobs:
           MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
           KEYCHAIN: ci.keychain
           KEYCHAIN_PASSWORD: ci_pass
-          GIT_SSH_COMMAND: ssh -i ~/.ssh/id_rsa_
+          GIT_SSH_COMMAND: ssh -i ~/.ssh/id_rsa_match -o StrictHostKeyChecking=no
+        run: |
+          bundle exec fastlane beta
+
+      # 5️⃣ codesign keychain 권한 설정
+      - name: Fix codesign keychain permission
+        if: always()
+        run: |
+          security set-key-partition-list \
+            -S apple-tool:,apple:,codesign: \
+            -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+        env:
+          KEYCHAIN: ci.keychain
+          KEYCHAIN_PASSWORD: ci_pass
