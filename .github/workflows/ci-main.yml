@@ -27,13 +27,10 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.MATCH_DEPLOY_KEY }}" > ~/.ssh/id_rsa_match
           chmod 600 ~/.ssh/id_rsa_match
-
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_rsa_match
-
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
-
           ssh-add -l
 
       # 3️⃣ CI Keychain 생성
@@ -41,7 +38,6 @@ jobs:
         run: |
           KEYCHAIN=ci.keychain
           KEYCHAIN_PASSWORD=""
-
           security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
           security list-keychains -d user -s "$KEYCHAIN" login.keychain
           security default-keychain -s "$KEYCHAIN"
@@ -55,18 +51,14 @@ jobs:
           MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
           GIT_SSH_COMMAND: ssh -i ~/.ssh/id_rsa_match -o StrictHostKeyChecking=no
         run: |
-          bundle exec fastlane match appstore --readonly 
-           --keychain-name ci.keychain 
-           --keychain-password ""
+          bundle exec fastlane match appstore --readonly --keychain-name ci.keychain --keychain-password ""
 
-      # 5️⃣ 🔥 codesign 권한
+      # 5️⃣ codesign 권한 설정
       - name: Fix codesign keychain permission
         run: |
-          security set-key-partition-list
-            -S apple-tool:,apple:,codesign:
-            -s -k "" ci.keychain
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "" ci.keychain
 
-      # 6️⃣ 🚀 빌드 + TestFlight 업로드
+      # 6️⃣ 빌드 + TestFlight 업로드
       - name: Build & Upload to TestFlight
         env:
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
