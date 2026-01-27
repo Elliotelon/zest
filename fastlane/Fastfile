@@ -36,7 +36,9 @@ platform :ios do
     match(
       type: "appstore",
       readonly: true,
-      git_url: ENV["MATCH_GIT_URL"]
+      git_url: ENV["MATCH_GIT_URL"],
+      keychain_name: "ci.keychain",
+      keychain_password: ""
     )
 
     # 1️⃣ App Store Connect API Key 인증 설정

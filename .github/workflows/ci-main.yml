@@ -43,21 +43,21 @@ jobs:
           KEYCHAIN_PASSWORD=""
 
           security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
-
           security list-keychains -d user -s "$KEYCHAIN" login.keychain
           security default-keychain -s "$KEYCHAIN"
-
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
           security set-keychain-settings -lut 21600 "$KEYCHAIN"
 
-      # 4️⃣ match만 실행
+      # 4️⃣ match 실행 (ci.keychain에 설치)
       - name: Run fastlane match
         env:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
           GIT_SSH_COMMAND: ssh -i ~/.ssh/id_rsa_match -o StrictHostKeyChecking=no
         run: |
-          bundle exec fastlane match appstore --readonly
+          bundle exec fastlane match appstore --readonly \
+            --keychain-name ci.keychain \
+            --keychain-password ""
 
       # 5️⃣ 🔥 codesign 권한
       - name: Fix codesign keychain permission
