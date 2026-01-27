@@ -9,42 +9,48 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      # 0️⃣ 앱 레포 checkout
+      # 앱 레포 checkout
       - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      # 1️⃣ Ruby 환경 세팅
+      # Ruby 환경 세팅
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
           bundler-cache: true
 
-      # 2️⃣ SSH agent에 match repo용 키 등록 (Fastlane 실행 전 반드시)
+      # SSH agent에 match repo용 키 등록
       - name: Set up SSH key for match repo
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.MATCH_DEPLOY_KEY }}" > ~/.ssh/id_rsa_match
           chmod 600 ~/.ssh/id_rsa_match
 
-          # SSH agent 시작 후 키 등록
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_rsa_match
 
-          # GitHub host key 등록
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
 
-          # 디버깅용: 등록된 키 확인
           ssh-add -l
-          echo "Public key fingerprint for match key:"
           ssh-keygen -y -f ~/.ssh/id_rsa_match
 
-          # 강제 환경 변수로 SSH 키 사용 지정
-          export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa_match -o StrictHostKeyChecking=no"
+      # CI keychain 생성 및 codesign 권한 설정
+      - name: Setup CI Keychain for codesigning
+        env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+        run: |
+          security create-keychain -p "" ci.keychain
+          security list-keychains -s ci.keychain
+          security default-keychain -s ci.keychain
+          security unlock-keychain -p "" ci.keychain
+          security set-key-partition-list \
+            -S apple-tool:,apple:,codesign: \
+            -s -k "" ci.keychain
 
-      # 3️⃣ Fastlane match + 빌드 + TestFlight 업로드
+      # Fastlane match + 빌드 + TestFlight 업로드
       - name: Run match & build + upload to TestFlight
         env:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
@@ -56,7 +62,5 @@ jobs:
           GIT_SSH_COMMAND: ssh -i ~/.ssh/id_rsa_match -o StrictHostKeyChecking=no
         run: |
           set -e
-          echo "Testing SSH access to GitHub for match repo..."
           ssh -T git@github.com || true
-
           bundle exec fastlane beta
