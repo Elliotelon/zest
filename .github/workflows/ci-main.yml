@@ -44,12 +44,12 @@ jobs:
           KEYCHAIN="ci.keychain"
           KEYCHAIN_PASSWORD="ci_pass"
           security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
-          security list-keychains -d user -s "$KEYCHAIN"
+          security list-keychains -d user -s "$KEYCHAIN" login.keychain
           security default-keychain -s "$KEYCHAIN"
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
           security set-keychain-settings -lut 21600 "$KEYCHAIN"
 
-      # 4️⃣ 빌드 + TestFlight 업로드 (Fastfile lane 사용)
+      # 4️⃣ 빌드 + TestFlight 업로드 (Fastfile lane 사용, match 포함)
       - name: Build & Upload to TestFlight
         env:
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
@@ -58,11 +58,10 @@ jobs:
           MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
           KEYCHAIN: ci.keychain
           KEYCHAIN_PASSWORD: ci_pass
-          GIT_SSH_COMMAND: ssh -i ~/.ssh/id_rsa_match -o StrictHostKeyChecking=no
         run: |
           bundle exec fastlane beta
 
-      # 5️⃣ codesign keychain 권한 설정
+      # 5️⃣ codesign keychain 권한 설정 (match로 인증서 설치 후)
       - name: Fix codesign keychain permission
         if: always()
         run: |

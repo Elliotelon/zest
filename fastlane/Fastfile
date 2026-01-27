@@ -22,7 +22,7 @@ platform :ios do
     )
   end
 
-  desc "TestFlight에 베타 빌드 배포 (API Key 전용)"
+  desc "TestFlight에 베타 빌드 배포 (API Key만 사용)"
   lane :beta do
     UI.user_error!("APP_STORE_CONNECT_API_KEY_ID missing") if ENV["APP_STORE_CONNECT_API_KEY_ID"].nil?
 
@@ -34,16 +34,17 @@ platform :ios do
       is_key_content_base64: false
     )
 
-    # 1️⃣ match 실행 (API Key 기반, readonly)
+    # 1️⃣ match 실행 (SSH + readonly)
     match(
       type: "appstore",
-      readonly: true,
+      readonly: true,  # 인증서 생성 없이 다운로드
       git_branch: "master",
-      git_url: ENV["MATCH_GIT_URL"],
+      git_url: ENV["MATCH_GIT_URL"],  # 반드시 SSH 형식: git@github.com:org/repo.git
       keychain_name: ENV.fetch("KEYCHAIN", "ci.keychain"),
       keychain_password: ENV.fetch("KEYCHAIN_PASSWORD", "ci_pass"),
       api_key: api_key,
-      clone_branch_directly: true
+      clone_branch_directly: true,
+      ssh_private_key: File.read(File.expand_path("~/.ssh/id_rsa_match")) # SSH 키 전달
     )
 
     # 2️⃣ 빌드 번호 자동 증가
