@@ -43,8 +43,7 @@ platform :ios do
       keychain_name: ENV.fetch("KEYCHAIN", "ci.keychain"),
       keychain_password: ENV.fetch("KEYCHAIN_PASSWORD", "ci_pass"),
       api_key: api_key,
-      clone_branch_directly: true,
-      ssh_private_key: File.read(File.expand_path("~/.ssh/id_rsa_match")) # SSH 키 전달
+      clone_branch_directly: true
     )
 
     # 2️⃣ 빌드 번호 자동 증가
