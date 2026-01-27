@@ -55,13 +55,15 @@ jobs:
           MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
           GIT_SSH_COMMAND: ssh -i ~/.ssh/id_rsa_match -o StrictHostKeyChecking=no
         run: |
-          bundle exec fastlane match appstore --readonly
+          bundle exec fastlane match appstore --readonly 
+           --keychain-name ci.keychain 
+           --keychain-password ""
 
       # 5️⃣ 🔥 codesign 권한
       - name: Fix codesign keychain permission
         run: |
-          security set-key-partition-list \
-            -S apple-tool:,apple:,codesign: \
+          security set-key-partition-list
+            -S apple-tool:,apple:,codesign:
             -s -k "" ci.keychain
 
       # 6️⃣ 🚀 빌드 + TestFlight 업로드
