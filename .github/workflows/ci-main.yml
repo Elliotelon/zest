@@ -9,16 +9,19 @@ jobs:
     runs-on: macos-latest
 
     steps:
+      # 0️⃣ 앱 레포 checkout
       - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      # 1️⃣ Ruby 환경 세팅
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
           bundler-cache: true
 
+      # 2️⃣ SSH key (match repo 접근용)
       - name: Set up SSH key for match repo
         run: |
           mkdir -p ~/.ssh
@@ -35,6 +38,7 @@ jobs:
             StrictHostKeyChecking no" >> ~/.ssh/config
           chmod 600 ~/.ssh/config
 
+      # 3️⃣ CI Keychain 생성
       - name: Setup CI Keychain
         run: |
           KEYCHAIN="ci.keychain"
@@ -45,34 +49,23 @@ jobs:
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
           security set-keychain-settings -lut 21600 "$KEYCHAIN"
 
-      - name: Run fastlane match
-        env:
-          MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
-          KEYCHAIN: ci.keychain
-          KEYCHAIN_PASSWORD: ci_pass
-          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
-          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
-          APP_STORE_CONNECT_API_KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}
-          GIT_SSH_COMMAND: ssh -i ~/.ssh/id_rsa_match -o StrictHostKeyChecking=no
-        run: |
-          bundle exec fastlane match appstore \
-            --keychain-name "$KEYCHAIN" \
-            --keychain-password "$KEYCHAIN_PASSWORD" \
-            --readonly true \
-            --git-branch "master" \
-            --clone-branch-directly true
-
+      # 4️⃣ codesign 권한 설정
       - name: Fix codesign keychain permission
         run: |
           security set-key-partition-list \
             -S apple-tool:,apple:,codesign: \
             -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+        env:
+          KEYCHAIN: ci.keychain
+          KEYCHAIN_PASSWORD: ci_pass
 
+      # 5️⃣ 빌드 + TestFlight 업로드 (Fastfile lane 사용)
       - name: Build & Upload to TestFlight
         env:
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_API_KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}
+          MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
           KEYCHAIN: ci.keychain
           KEYCHAIN_PASSWORD: ci_pass
         run: |

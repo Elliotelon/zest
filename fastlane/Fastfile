@@ -1,9 +1,6 @@
-# fastlane/Fastfile
-
 default_platform(:ios)
 
 platform :ios do
-
   before_all do
     xcode_select("/Applications/Xcode.app") unless is_ci
   end
@@ -37,15 +34,15 @@ platform :ios do
       is_key_content_base64: false
     )
 
-    # 1️⃣ match 실행 (readonly, API Key 사용)
+    # 1️⃣ match 실행 (API Key 기반, readonly)
     match(
       type: "appstore",
-      readonly: true,                        # 다운로드만 수행
+      readonly: true,
       git_branch: "master",
       git_url: ENV["MATCH_GIT_URL"],
       keychain_name: ENV.fetch("KEYCHAIN", "ci.keychain"),
       keychain_password: ENV.fetch("KEYCHAIN_PASSWORD", "ci_pass"),
-      api_key: api_key,                       # Apple API Key 사용
+      api_key: api_key,
       clone_branch_directly: true
     )
 
