@@ -64,15 +64,20 @@ jobs:
           KEYCHAIN_PASSWORD: ci_pass
           GIT_SSH_COMMAND: ssh -i ~/.ssh/id_rsa_match -o StrictHostKeyChecking=no
         run: |
-          # ssh-agent 재시작 + 키 등록 (step 별 환경에서 안전하게)
+          # 1️⃣ MATCH_PASSWORD export (Fastlane에서 바로 사용)
+          export MATCH_PASSWORD="${MATCH_PASSWORD}"
+
+          # 2️⃣ ssh-agent 재시작 + 키 등록
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_rsa_match
           ssh-add -l
 
+          # 3️⃣ Fastlane match 실행
           bundle exec fastlane match appstore \
             --keychain-name "$KEYCHAIN" \
             --keychain-password "$KEYCHAIN_PASSWORD" \
-            --readonly true
+            --readonly true \
+            --git-branch "master"
 
       # 5️⃣ codesign 권한 설정
       - name: Fix codesign keychain permission

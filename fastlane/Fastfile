@@ -34,6 +34,7 @@ platform :ios do
     match(
       type: "appstore",
       readonly: true,
+      git_branch: "master",
       git_url: ENV["MATCH_GIT_URL"],
       keychain_name: ENV.fetch("KEYCHAIN", "ci.keychain"),
       keychain_password: ENV.fetch("KEYCHAIN_PASSWORD", "ci_pass")
