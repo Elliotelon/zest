@@ -6,9 +6,7 @@ platform :ios do
   
   # 모든 레인 실행 전에 API Key를 설정합니다.
   before_all do
-    if !is_ci
-      xcode_select("/Applications/Xcode.app")
-    end
+    xcode_select("/Applications/Xcode.app") unless is_ci
   end
 
   desc "유닛 테스트 실행"
@@ -37,8 +35,8 @@ platform :ios do
       type: "appstore",
       readonly: true,
       git_url: ENV["MATCH_GIT_URL"],
-      keychain_name: "ci.keychain",
-      keychain_password: ""
+      keychain_name: ENV.fetch("KEYCHAIN", "ci.keychain"),
+      keychain_password: ENV.fetch("KEYCHAIN_PASSWORD", "ci_pass")
     )
 
     # 1️⃣ App Store Connect API Key 인증 설정

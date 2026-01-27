@@ -36,27 +36,38 @@ jobs:
       # 3️⃣ CI Keychain 생성
       - name: Setup CI Keychain
         run: |
-          KEYCHAIN=ci.keychain
-          KEYCHAIN_PASSWORD=""
+          KEYCHAIN="ci.keychain"
+          KEYCHAIN_PASSWORD="ci_pass"
           security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
           security list-keychains -d user -s "$KEYCHAIN" login.keychain
           security default-keychain -s "$KEYCHAIN"
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
           security set-keychain-settings -lut 21600 "$KEYCHAIN"
+        env:
+          KEYCHAIN_PASSWORD: ci_pass
 
       # 4️⃣ match 실행 (ci.keychain에 설치)
       - name: Run fastlane match
         env:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          KEYCHAIN: ci.keychain
+          KEYCHAIN_PASSWORD: ci_pass
           GIT_SSH_COMMAND: ssh -i ~/.ssh/id_rsa_match -o StrictHostKeyChecking=no
         run: |
-          bundle exec fastlane match appstore --readonly --keychain-name ci.keychain --keychain-password ""
+          bundle exec fastlane match appstore --readonly \
+            --keychain-name "$KEYCHAIN" \
+            --keychain-password "$KEYCHAIN_PASSWORD"
 
       # 5️⃣ codesign 권한 설정
       - name: Fix codesign keychain permission
         run: |
-          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "" ci.keychain
+          security set-key-partition-list \
+            -S apple-tool:,apple:,codesign: \
+            -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+        env:
+          KEYCHAIN_PASSWORD: ci_pass
+          KEYCHAIN: ci.keychain
 
       # 6️⃣ 빌드 + TestFlight 업로드
       - name: Build & Upload to TestFlight
