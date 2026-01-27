@@ -8,7 +8,7 @@
 import Foundation
 
 /// 상품 엔티티
-struct Product: Identifiable, Codable {
+struct Product: Identifiable, Codable, Sendable {
     let id: UUID
     let name: String
     let price: Double

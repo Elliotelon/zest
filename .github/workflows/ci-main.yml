@@ -1,0 +1,74 @@
+name: Zest CD (Main)
+
+on:
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  deploy:
+    runs-on: macos-latest
+
+    steps:
+      # 0️⃣ 앱 레포 checkout
+      - uses: actions/checkout@v4
+        with:
+          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # 1️⃣ Ruby 환경 세팅
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+
+      # 2️⃣ SSH key (match repo 접근용)
+      - name: Set up SSH key for match repo
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.MATCH_DEPLOY_KEY }}" > ~/.ssh/id_rsa_match
+          chmod 600 ~/.ssh/id_rsa_match
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/id_rsa_match
+          ssh-add -l
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+          echo "Host github.com
+            HostName github.com
+            IdentityFile ~/.ssh/id_rsa_match
+            StrictHostKeyChecking no" >> ~/.ssh/config
+          chmod 600 ~/.ssh/config
+
+      # 3️⃣ CI Keychain 생성
+      - name: Setup CI Keychain
+        run: |
+          KEYCHAIN="ci.keychain"
+          KEYCHAIN_PASSWORD="ci_pass"
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+          security list-keychains -d user -s "$KEYCHAIN" login.keychain
+          security default-keychain -s "$KEYCHAIN"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN"
+
+      # 4️⃣ 빌드 + TestFlight 업로드 (Fastfile lane 사용, match 포함)
+      - name: Build & Upload to TestFlight
+        env:
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}
+          MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          KEYCHAIN: ci.keychain
+          KEYCHAIN_PASSWORD: ci_pass
+        run: |
+          bundle exec fastlane beta
+
+      # 5️⃣ codesign keychain 권한 설정 (match로 인증서 설치 후)
+      - name: Fix codesign keychain permission
+        if: always()
+        run: |
+          security set-key-partition-list \
+            -S apple-tool:,apple:,codesign: \
+            -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+        env:
+          KEYCHAIN: ci.keychain
+          KEYCHAIN_PASSWORD: ci_pass

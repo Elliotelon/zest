@@ -1,0 +1,30 @@
+{
+  "configurations" : [
+    {
+      "id" : "A5942477-199A-48C7-AA8C-204323BD3034",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Zest.xcodeproj",
+      "identifier" : "95015D982F1603A30034404F",
+      "name" : "Zest"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:Zest.xcodeproj",
+        "identifier" : "95D5A1EA2F21057000B4CA5D",
+        "name" : "ZestTests"
+      }
+    }
+  ],
+  "version" : 1
+}

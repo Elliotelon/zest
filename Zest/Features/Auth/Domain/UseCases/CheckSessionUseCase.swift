@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class CheckSessionUseCase {
+final class CheckSessionUseCase: Sendable  {
     private let repository: AuthRepositoryProtocol
     
     init(repository: AuthRepositoryProtocol) {

@@ -9,7 +9,7 @@ import Foundation
 import Supabase
 
 /// 현재 세션 정보를 가져오는 UseCase
-final class GetCurrentSessionUseCase {
+final class GetCurrentSessionUseCase: Sendable  {
     private let repository: AuthRepositoryProtocol
     
     init(repository: AuthRepositoryProtocol) {

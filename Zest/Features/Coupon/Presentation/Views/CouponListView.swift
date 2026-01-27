@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ZestCore
 
 /// 쿠폰 목록 화면
 struct CouponListView: View {

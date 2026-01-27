@@ -8,7 +8,7 @@
 import Foundation
 
 /// Supabase products 테이블과 매핑되는 DTO
-struct ProductDTO: Codable {
+struct ProductDTO: Codable, Sendable {
     let id: UUID?
     let name: String
     let price: Double

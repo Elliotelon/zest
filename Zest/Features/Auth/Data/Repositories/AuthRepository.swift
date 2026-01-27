@@ -8,6 +8,7 @@
 import Foundation
 import AuthenticationServices
 import Supabase
+import ZestCore
 
 final class AuthRepository: AuthRepositoryProtocol {
     private let client: SupabaseClient
@@ -44,7 +45,7 @@ final class AuthRepository: AuthRepositoryProtocol {
         }
     }
     
-    func observeAuthStateChanges(_ onChanged: @escaping (Bool) -> Void) -> Task<Void, Never> {
+    func observeAuthStateChanges(_ onChanged: @escaping @Sendable @MainActor (Bool) -> Void) -> Task<Void, Never> {
         Task {
             for await event in client.auth.authStateChanges {
                 let isAuthenticated = event.session != nil

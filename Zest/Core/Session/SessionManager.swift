@@ -1,16 +1,8 @@
-//
-//  SessionManager.swift
-//  Zest
-//
-//  Created by AI Assistant on 1/21/26.
-//
-
 import Foundation
 import Supabase
+import ZestCore
 import Combine
 
-/// 전역 세션 관리자
-/// 앱 전체에서 현재 로그인된 사용자의 세션 정보를 관리합니다.
 @MainActor
 final class SessionManager: ObservableObject {
     static let shared = SessionManager()
@@ -19,42 +11,47 @@ final class SessionManager: ObservableObject {
     @Published private(set) var isLoading = false
     
     private let client: SupabaseClient
-    
+    private var authTask: Task<Void, Never>?
+
     private init() {
-        self.client = APIService.shared
+        self.client = APIService.shared.client
+        // ✅ 생성 시점에 실시간 감지 시작
+        observeAuthChanges()
     }
     
-    /// 현재 세션 정보를 가져옵니다.
-    var profileId: UUID? {
-        currentSession?.user.id
+    var profileId: UUID? { currentSession?.user.id }
+    var email: String? { currentSession?.user.email }
+    
+    /// ✅ Supabase 인증 상태 실시간 구독
+    func observeAuthChanges() {
+        authTask?.cancel()
+        authTask = Task {
+            // authStateChanges는 로그인/로그아웃/토큰갱신 이벤트를 실시간으로 방출합니다.
+            for await (event, session) in client.auth.authStateChanges {
+                print("🚀 [SessionManager] Auth Event: \(event)")
+                self.currentSession = session
+                
+                if event == .signedOut {
+                    self.currentSession = nil
+                }
+            }
+        }
     }
     
-    var email: String? {
-        currentSession?.user.email
-    }
-    
-    /// 세션을 로드합니다.
+    /// 초기 세션 로드 (App 진입 시 호출)
     func loadSession() async {
         guard !isLoading else { return }
-        
         isLoading = true
         defer { isLoading = false }
         
         do {
+            // emitLocalSessionAsInitialSession 옵션에 의해 로컬 세션을 즉시 가져옵니다.
             currentSession = try await client.auth.session
-            print("✅ 세션 로드 성공: \(profileId?.uuidString ?? "없음")")
         } catch {
             currentSession = nil
-            print("⚠️ 세션 로드 실패 (로그아웃 상태일 수 있음): \(error.localizedDescription)")
         }
     }
-    
-    /// 세션을 새로고침합니다.
-    func refreshSession() async {
-        await loadSession()
-    }
-    
-    /// 세션을 초기화합니다. (로그아웃 시 호출)
+
     func clearSession() {
         currentSession = nil
     }

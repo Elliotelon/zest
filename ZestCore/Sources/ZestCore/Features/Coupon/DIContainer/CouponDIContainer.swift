@@ -8,10 +8,15 @@
 import Supabase
 import SwiftUI
 
-final class CouponDIContainer {
-    private let client = APIService.shared
+@MainActor
+public final class CouponDIContainer {
+    private var client: SupabaseClient {
+        APIService.shared.client
+    }
     
-    func makeCouponViewModel() -> CouponViewModel {
+    public init() {}
+    
+    public func makeCouponViewModel() -> CouponViewModel {
         let repository = CouponRepository(client: client)
         let fetchAvailableCouponsUseCase = FetchAvailableCouponsUseCase(repository: repository)
         let fetchUserCouponsUseCase = FetchUserCouponsUseCase(repository: repository)
@@ -22,10 +27,5 @@ final class CouponDIContainer {
             fetchUserCouponsUseCase: fetchUserCouponsUseCase,
             issueCouponUseCase: issueCouponUseCase
         )
-    }
-    
-    func makeCouponListView() -> some View {
-        let viewModel = makeCouponViewModel()
-        return CouponListView(viewModel: viewModel)
     }
 }

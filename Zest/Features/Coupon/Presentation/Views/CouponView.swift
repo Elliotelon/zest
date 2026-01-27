@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ZestCore
 
 struct CouponView: View {
     var body: some View {

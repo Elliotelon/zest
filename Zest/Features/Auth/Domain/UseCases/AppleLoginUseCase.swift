@@ -7,7 +7,7 @@
 
 import AuthenticationServices
 
-final class AppleLoginUseCase {
+final class AppleLoginUseCase: Sendable {
     private let repository: AuthRepositoryProtocol
     private let saveProfilesUseCase: SaveProfilesUseCase
 

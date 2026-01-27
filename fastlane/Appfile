@@ -1,0 +1,13 @@
+# Appfile
+
+# App의 이름
+app_identifier("com.elliot.Zest") # Apple App Store에서의 번들 ID
+
+# App Store Connect에 사용할 이메일
+apple_id("elliotelon@gmail.com")
+
+# Team ID (개발팀)
+team_id("A3GL2XU4F8")
+
+
+
