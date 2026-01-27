@@ -22,7 +22,7 @@ platform :ios do
     )
   end
 
-  desc "TestFlight에 베타 빌드 배포 (Apple ID 필요 없음)"
+  desc "TestFlight에 베타 빌드 배포 (API Key 전용)"
   lane :beta do
     UI.user_error!("APP_STORE_CONNECT_API_KEY_ID missing") if ENV["APP_STORE_CONNECT_API_KEY_ID"].nil?
 

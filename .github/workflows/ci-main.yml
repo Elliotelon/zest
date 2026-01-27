@@ -44,22 +44,12 @@ jobs:
           KEYCHAIN="ci.keychain"
           KEYCHAIN_PASSWORD="ci_pass"
           security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
-          security list-keychains -d user -s "$KEYCHAIN" login.keychain
+          security list-keychains -d user -s "$KEYCHAIN"
           security default-keychain -s "$KEYCHAIN"
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
           security set-keychain-settings -lut 21600 "$KEYCHAIN"
 
-      # 4️⃣ codesign 권한 설정
-      - name: Fix codesign keychain permission
-        run: |
-          security set-key-partition-list \
-            -S apple-tool:,apple:,codesign: \
-            -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
-        env:
-          KEYCHAIN: ci.keychain
-          KEYCHAIN_PASSWORD: ci_pass
-
-      # 5️⃣ 빌드 + TestFlight 업로드 (Fastfile lane 사용)
+      # 4️⃣ 빌드 + TestFlight 업로드 (Fastfile lane 사용)
       - name: Build & Upload to TestFlight
         env:
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
@@ -68,5 +58,4 @@ jobs:
           MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
           KEYCHAIN: ci.keychain
           KEYCHAIN_PASSWORD: ci_pass
-        run: |
-          bundle exec fastlane beta
+          GIT_SSH_COMMAND: ssh -i ~/.ssh/id_rsa_
