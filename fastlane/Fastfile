@@ -1,28 +1,19 @@
-# fastlane/Fastfile
-
 default_platform(:ios)
 
 platform :ios do
-  
-  # 모든 레인 실행 전에 API Key를 설정합니다.
   before_all do
-    if !is_ci
-      xcode_select("/Applications/Xcode.app")
-    end
-
+    xcode_select("/Applications/Xcode.app") unless is_ci
   end
 
-  desc "유닛 테스트 실행 (CI용)"
+  desc "유닛 테스트 실행"
   lane :test do
-  
     sh("swift test --package-path ../ZestCore")
 
     ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "100"
     ENV["FASTLANE_XCODEBUILD_SETTINGS_RETRIES"] = "5"
-    
-    
+
     scan(
-      project: "Zest.xcodeproj", # Workspace 에러 방지
+      project: "Zest.xcodeproj",
       scheme: "Zest",
       destination: "platform=iOS Simulator,name=iPhone 16,OS=18.6",
       fail_build: true,
@@ -31,18 +22,11 @@ platform :ios do
     )
   end
 
-  desc "TestFlight에 베타 빌드 배포 (CD용)"
+  desc "TestFlight에 베타 빌드 배포 (API Key만 사용)"
   lane :beta do
     UI.user_error!("APP_STORE_CONNECT_API_KEY_ID missing") if ENV["APP_STORE_CONNECT_API_KEY_ID"].nil?
 
-    # 0️⃣ match로 코드 서명 설정 적용
-    match(
-      type: "appstore",
-      readonly: true,
-      git_url: ENV["MATCH_GIT_URL"]
-    )
-
-    # 1️⃣ App Store Connect API Key 인증 설정
+    # 0️⃣ App Store Connect API Key 인증
     api_key = app_store_connect_api_key(
       key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
       issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
@@ -50,8 +34,26 @@ platform :ios do
       is_key_content_base64: false
     )
 
+    # 1️⃣ match 실행 (SSH + readonly)
+    match(
+      type: "appstore",
+      readonly: true,  # 인증서 생성 없이 다운로드
+      git_branch: "master",
+      git_url: ENV["MATCH_GIT_URL"],  # 반드시 SSH 형식: git@github.com:org/repo.git
+      keychain_name: ENV.fetch("KEYCHAIN", "ci.keychain"),
+      keychain_password: ENV.fetch("KEYCHAIN_PASSWORD", "ci_pass"),
+      api_key: api_key,
+      clone_branch_directly: true
+    )
+    
+
+
     # 2️⃣ 빌드 번호 자동 증가
-    increment_build_number(xcodeproj: "Zest.xcodeproj")
+    latest_build_number = latest_testflight_build_number(app_identifier: "com.elliot.Zest")
+    increment_build_number(
+      xcodeproj: "Zest.xcodeproj",
+      build_number: latest_build_number + 1
+    )
 
     # 3️⃣ 아카이브 빌드
     build_app(
@@ -59,7 +61,6 @@ platform :ios do
       scheme: "Zest",
       include_bitcode: false,
       export_method: "app-store",
-      export_xcargs: "-allowProvisioningUpdates",
       export_team_id: "A3GL2XU4F8"
     )
 
@@ -72,7 +73,6 @@ platform :ios do
   end
 
   error do |lane, exception|
-    # 필요 시 Slack/Notion/Email 알림 추가
+    puts "🚨 Fastlane error: #{exception.message}"
   end
 end
-

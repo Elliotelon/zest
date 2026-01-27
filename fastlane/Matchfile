@@ -1,8 +1,13 @@
 # Matchfile
 
-#git_url("git@github.com:Elliotelon/Zest-Certificates.git")  # 매치 전용 private repo URL (SSH)
-type("appstore")                                         # 배포용 인증서
-app_identifier(["com.elliot.Zest"])                     # 앱 Bundle ID, 여러개 가능
-username("elliotelon@gmail.com")                   # Apple Developer 계정 이메일
-readonly(false)                                         # 인증서 생성 가능 여부
+git_url("git@github.com:Elliotelon/Zest-Certificates.git")
+
+app_identifier([
+  "com.elliot.Zest"
+])
+
+team_id("A3GL2XU4F8")
+username("elliotelon@gmail.com")
+
+storage_mode("git")
 
