@@ -73,7 +73,7 @@ jobs:
           bundle exec fastlane match appstore \
             --keychain-name "$KEYCHAIN" \
             --keychain-password "$KEYCHAIN_PASSWORD" \
-            --readonly false \
+            --readonly true \
             --git-branch "master"
             # --clone-branch-directly true  # 필요 시 uncomment
 
