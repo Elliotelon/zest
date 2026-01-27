@@ -3,8 +3,8 @@
 default_platform(:ios)
 
 platform :ios do
-  
-  # 모든 레인 실행 전에 API Key를 설정합니다.
+
+  # 모든 레인 실행 전에 API Key를 설정
   before_all do
     xcode_select("/Applications/Xcode.app") unless is_ci
   end
@@ -29,15 +29,17 @@ platform :ios do
   desc "TestFlight에 베타 빌드 배포"
   lane :beta do
     UI.user_error!("APP_STORE_CONNECT_API_KEY_ID missing") if ENV["APP_STORE_CONNECT_API_KEY_ID"].nil?
+    UI.user_error!("MATCH_PASSWORD missing") if ENV["MATCH_PASSWORD"].nil?
 
     # 0️⃣ match로 코드 서명 설정 적용 (App Store 프로필)
     match(
       type: "appstore",
-      readonly: true,
-      git_branch: "master",
+      readonly: false,                    # CI에서 인증서 설치 가능
+      git_branch: "master",               # Match repo 브랜치
       git_url: ENV["MATCH_GIT_URL"],
       keychain_name: ENV.fetch("KEYCHAIN", "ci.keychain"),
-      keychain_password: ENV.fetch("KEYCHAIN_PASSWORD", "ci_pass")
+      keychain_password: ENV.fetch("KEYCHAIN_PASSWORD", "ci_pass"),
+      password: ENV["MATCH_PASSWORD"]     # secrets에서 전달
     )
 
     # 1️⃣ App Store Connect API Key 인증 설정
@@ -58,7 +60,6 @@ platform :ios do
       include_bitcode: false,
       export_method: "app-store",
       export_team_id: "A3GL2XU4F8"
-      # export_options/provisioningProfiles 필요 없음, match가 자동 설정
     )
 
     # 4️⃣ TestFlight 업로드
