@@ -9,19 +9,19 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      # 앱 레포 checkout
+      # 0️⃣ 앱 레포 checkout
       - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      # Ruby 환경 세팅
+      # 1️⃣ Ruby 환경 세팅
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
           bundler-cache: true
 
-      # SSH agent에 match repo용 키 등록
+      # 2️⃣ SSH agent에 match repo용 키 등록
       - name: Set up SSH key for match repo
         run: |
           mkdir -p ~/.ssh
@@ -35,22 +35,26 @@ jobs:
           chmod 644 ~/.ssh/known_hosts
 
           ssh-add -l
-          ssh-keygen -y -f ~/.ssh/id_rsa_match
 
-      # CI keychain 생성 및 codesign 권한 설정
+      # 🔥 3️⃣ CI keychain 생성 + codesign 권한 (필수)
       - name: Setup CI Keychain for codesigning
-        env:
-          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
         run: |
-          security create-keychain -p "" ci.keychain
-          security list-keychains -s ci.keychain
-          security default-keychain -s ci.keychain
-          security unlock-keychain -p "" ci.keychain
+          KEYCHAIN=ci.keychain
+          KEYCHAIN_PASSWORD=""
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+
+          security list-keychains -d user -s "$KEYCHAIN"
+          security default-keychain -s "$KEYCHAIN"
+
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN"
+
           security set-key-partition-list \
             -S apple-tool:,apple:,codesign: \
-            -s -k "" ci.keychain
+            -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
 
-      # Fastlane match + 빌드 + TestFlight 업로드
+      # 4️⃣ Fastlane match + 빌드 + TestFlight 업로드
       - name: Run match & build + upload to TestFlight
         env:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
