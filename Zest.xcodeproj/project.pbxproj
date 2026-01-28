@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		950688082F17447A00CBD018 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 950688072F17447000CBD018 /* .gitignore */; };
+		955793A12F29FD4800ACFFB5 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 955793A02F29FD4800ACFFB5 /* FirebaseCore */; };
+		955793A32F29FD4800ACFFB5 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 955793A22F29FD4800ACFFB5 /* FirebaseCrashlytics */; };
 		9598A0E82F1F491E00F9D106 /* .cursorrules in Resources */ = {isa = PBXBuildFile; fileRef = 9598A0E72F1F491400F9D106 /* .cursorrules */; };
 		959C714A2F24904800FBD65C /* ZestCore in Frameworks */ = {isa = PBXBuildFile; productRef = 959C71492F24904800FBD65C /* ZestCore */; };
 		95BFD6F02F1A3704000CE31D /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 95BFD6EF2F1A3704000CE31D /* Supabase */; };
@@ -74,6 +76,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				95BFD6F02F1A3704000CE31D /* Supabase in Frameworks */,
+				955793A32F29FD4800ACFFB5 /* FirebaseCrashlytics in Frameworks */,
+				955793A12F29FD4800ACFFB5 /* FirebaseCore in Frameworks */,
 				959C714A2F24904800FBD65C /* ZestCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -143,6 +147,8 @@
 			packageProductDependencies = (
 				95BFD6EF2F1A3704000CE31D /* Supabase */,
 				959C71492F24904800FBD65C /* ZestCore */,
+				955793A02F29FD4800ACFFB5 /* FirebaseCore */,
+				955793A22F29FD4800ACFFB5 /* FirebaseCrashlytics */,
 			);
 			productName = Zest;
 			productReference = 95015D992F1603A30034404F /* Zest.app */;
@@ -201,6 +207,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				95BFD6EE2F1A3704000CE31D /* XCRemoteSwiftPackageReference "supabase-swift" */,
+				9557939F2F29FD4800ACFFB5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 95015D9A2F1603A30034404F /* Products */;
@@ -685,6 +692,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		9557939F2F29FD4800ACFFB5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.8.0;
+			};
+		};
 		95BFD6EE2F1A3704000CE31D /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/supabase/supabase-swift";
@@ -696,6 +711,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		955793A02F29FD4800ACFFB5 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9557939F2F29FD4800ACFFB5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		955793A22F29FD4800ACFFB5 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9557939F2F29FD4800ACFFB5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
 		959C71492F24904800FBD65C /* ZestCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ZestCore;

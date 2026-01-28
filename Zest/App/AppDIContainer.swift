@@ -11,6 +11,15 @@ import ZestCore
 /// 앱 레벨 의존성 조립 (Repository -> UseCase -> Coordinator -> RootView)
 final class AppDIContainer {
     private let client = APIService.shared.client
+    private let logger: any Logger
+    
+    init() {
+#if DEBUG
+        logger = DebugLogger()
+#else
+        logger = CrashlyticsLogger()
+#endif
+    }
     
     private lazy var authRepository: AuthRepositoryProtocol = {
         AuthRepository(client: client)
@@ -22,8 +31,7 @@ final class AppDIContainer {
     
     private lazy var appCoordinator: AppCoordinator = {
         AppCoordinator(
-            checkSessionUseCase: checkSessionUseCase,
-            authRepository: authRepository
+            
         )
     }()
     
@@ -31,13 +39,14 @@ final class AppDIContainer {
         AuthDIContainer(repository: authRepository)
     }()
     
-    private lazy var productDIContainer: ProductDIContainer = {
-        ProductDIContainer()
+    private lazy var couponDIContainer: CouponDIContainer = {
+        CouponDIContainer(logger: logger)
     }()
     
-    private lazy var couponDIContainer: CouponDIContainer = {
-        CouponDIContainer()
+    private lazy var productDIContainer: ProductDIContainer = {
+        ProductDIContainer(couponDIContainer: couponDIContainer)
     }()
+    
     
     func makeRootView() -> some View {
         RootView(

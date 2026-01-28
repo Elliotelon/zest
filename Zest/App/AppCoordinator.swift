@@ -1,54 +1,28 @@
-//
-//  AppCoordinator.swift
-//  Zest
-//
-//  Created by 김민규 on 1/20/26.
-//
-
 import SwiftUI
 import Combine
 import ZestCore
 
-/// 앱 시작 시 세션을 확인하고, 이후 Auth 상태 변화를 감지해 화면을 전환하는 코디네이터
+/// 앱의 현재 경로(Route) 상태만 관리
 @MainActor
-final class AppCoordinator: ObservableObject {
+public final class AppCoordinator: ObservableObject {
     @Published var currentRoute: AppRoute = .splash
-    @Published var userId: UUID?
     
-    private let checkSessionUseCase: CheckSessionUseCase
-    private let authRepository: AuthRepositoryProtocol
-    private var authStateTask: Task<Void, Never>?
-    private var isInitialized = false
     
-    init(checkSessionUseCase: CheckSessionUseCase,
-         authRepository: AuthRepositoryProtocol) {
-        self.checkSessionUseCase = checkSessionUseCase
-        self.authRepository = authRepository
-    }
-    
-    /// 앱 시작 시 한 번 호출
+    /// 초기 시작 로직 (필요 시 최소한의 초기화만 수행)
     func start() async {
-        await checkInitialSession()
-        observeAuthChanges()
+        // 이제 초기 세션 체크는 SessionManager가 담당하므로
+        // 여기서는 부가적인 앱 초기화 로직만 남깁니다.
     }
     
-    private func checkInitialSession() async {
-        guard !isInitialized else { return }
-        let hasSession = await checkSessionUseCase.execute()
-         
-        currentRoute = hasSession ? .home : .login
-        self.isInitialized = true
+    // ✅ 뷰에서 직접 호출하거나 RootView의 onChange에서 호출할 경로 변경 메서드
+    func showHome() {
+        currentRoute = .home
     }
     
-    private func observeAuthChanges() {
-        authStateTask = authRepository.observeAuthStateChanges { [weak self] isAuthenticated in
-            guard let self else { return }
-            self.currentRoute = isAuthenticated ? .home : .login
-        }
-    }
-    
-    deinit {
-        authStateTask?.cancel()
+    func showLogin() {
+        currentRoute = .login
     }
 }
+
+
 
