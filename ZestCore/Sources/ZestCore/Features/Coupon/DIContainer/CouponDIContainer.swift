@@ -14,11 +14,15 @@ public final class CouponDIContainer {
         APIService.shared.client
     }
     
-    public init() {}
+    private let logger: any Logger
+    
+    public init(logger: any Logger) {
+        self.logger = logger
+    }
     
     public func makeCouponViewModel() -> CouponViewModel {
         let repository = CouponRepository(client: client)
-        let fetchAvailableCouponsUseCase = FetchAvailableCouponsUseCase(repository: repository)
+        let fetchAvailableCouponsUseCase = FetchAvailableCouponsUseCase(repository: repository, logger: logger)
         let fetchUserCouponsUseCase = FetchUserCouponsUseCase(repository: repository)
         let issueCouponUseCase = IssueCouponUseCase(repository: repository)
         

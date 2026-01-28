@@ -9,7 +9,7 @@ struct RootView: View {
     private let authDIContainer: AuthDIContainer
     private let productDIContainer: ProductDIContainer
     private let couponDIContainer: CouponDIContainer
-    private let authRepository: any AuthRepositoryProtocol // any 키워드 적용
+    private let authRepository: any AuthRepositoryProtocol
     
     init(
         coordinator: AppCoordinator,
