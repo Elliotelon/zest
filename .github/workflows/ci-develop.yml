@@ -2,33 +2,69 @@ name: Zest CI (Develop)
 
 on:
   pull_request:
-    branches: [ "develop" ]
+    branches: ["develop"]
+
+# PR 여러 개 동시에 들어오면 이전 CI 취소
+concurrency:
+  group: zest-ci-develop
+  cancel-in-progress: true
 
 jobs:
   test:
     runs-on: macos-15
+
     steps:
+      # 0️⃣ 코드 체크아웃
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 1️⃣ Xcode 버전 고정
+      - name: Set up Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '26.0'
+
+      # 2️⃣ Ruby 환경 (Fastlane 대비, bundler cache 포함)
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
           bundler-cache: true
-          
+
+      # 3️⃣ Xcode / Swift 버전 로그
+      - name: Print tool versions
+        run: |
+          xcodebuild -version
+          swift --version
+
+      # 4️⃣ DerivedData 캐시
       - name: Cache DerivedData
         uses: actions/cache@v4
         with:
           path: ~/Library/Developer/Xcode/DerivedData
-          key: ${{ runner.os }}-xcode-deriveddata-${{ hashFiles('**/Project.pbxproj') }}
+          key: ${{ runner.os }}-deriveddata-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-xcode-deriveddata-
-            
-      - name: Create xcconfig for CI
+            ${{ runner.os }}-deriveddata-
+
+      # 5️⃣ CI용 xcconfig 생성 (Git에 없는 파일)
+      - name: Create CI xcconfig
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: |
-          echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" > Zest/Configs/Debug.xcconfig
-          echo "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}" >> Zest/Configs/Debug.xcconfig
-        
+          mkdir -p Zest/Configs
+
+          # secrets 없으면 실패
+          : "${SUPABASE_URL:?Missing SUPABASE_URL}"
+          : "${SUPABASE_ANON_KEY:?Missing SUPABASE_ANON_KEY}"
+
+          # CI 전용 xcconfig 생성
+          {
+            echo "// ===== CI generated config ====="
+            echo "SUPABASE_URL=${SUPABASE_URL}"
+            echo "SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}"
+          } > Zest/Configs/Debug.ci.xcconfig
+
+      # 6️⃣ ZestCore Logic Tests
       - name: Run ZestCore Logic Tests
         run: swift test --package-path ./ZestCore
