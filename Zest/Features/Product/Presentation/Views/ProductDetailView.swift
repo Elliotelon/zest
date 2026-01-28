@@ -290,6 +290,7 @@ struct ProductDetailCouponCardView: View {
 }
 
 #Preview {
+    let logger = MockLogger()
     let productRepository = ProductRepository(client: APIService.shared.client)
     let productUseCase = FetchProductDetailUseCase(repository: productRepository)
     let productViewModel = ProductDetailViewModel(
@@ -297,7 +298,7 @@ struct ProductDetailCouponCardView: View {
         fetchProductDetailUseCase: productUseCase
     )
     
-    let couponDIContainer = CouponDIContainer()
+    let couponDIContainer = CouponDIContainer(logger: logger)
     let couponViewModel = couponDIContainer.makeCouponViewModel()
     
     NavigationView {
