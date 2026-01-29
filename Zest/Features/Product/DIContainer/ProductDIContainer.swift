@@ -12,7 +12,11 @@ import ZestCore
 @MainActor
 final class ProductDIContainer {
     private let client = APIService.shared.client
-    private let couponDIContainer = CouponDIContainer()
+    private let couponDIContainer: CouponDIContainer
+    
+    init(couponDIContainer: CouponDIContainer) {
+        self.couponDIContainer = couponDIContainer
+    }
     
     func makeProductListView() -> some View {
         let repository = ProductRepository(client: client)
