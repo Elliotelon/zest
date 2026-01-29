@@ -17,11 +17,7 @@ public final class CouponViewModel: ObservableObject {
     @Published public var errorMessage: String?
     @Published public var successMessage: String?
     
-<<<<<<<< HEAD:ZestCore/Sources/ZestCore/Features/Coupon/Application/CouponViewModel.swift
     public let fetchAvailableCouponsUseCase: FetchAvailableCouponsUseCaseProtocol
-========
-    public let fetchAvailableCouponsUseCase: FetchAvailableCouponsUseCase
->>>>>>>> origin/main:ZestCore/Sources/ZestCore/Features/Coupon/Application/CouponViewModel.swift~HEAD
     public let fetchUserCouponsUseCase: FetchUserCouponsUseCase
     public let issueCouponUseCase: IssueCouponUseCase
     
