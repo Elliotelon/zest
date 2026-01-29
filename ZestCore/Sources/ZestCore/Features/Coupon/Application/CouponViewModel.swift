@@ -18,6 +18,7 @@ public final class CouponViewModel: ObservableObject {
     @Published public var successMessage: String?
     
     public let fetchAvailableCouponsUseCase: FetchAvailableCouponsUseCaseProtocol
+
     public let fetchUserCouponsUseCase: FetchUserCouponsUseCase
     public let issueCouponUseCase: IssueCouponUseCase
     
