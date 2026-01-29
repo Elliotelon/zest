@@ -1,22 +1,23 @@
-//
-//  DebugLogger.swift
-//  Zest
-//
-//  Created by 김민규 on 1/28/26.
-//
 import ZestCore
 import Foundation
+import os
 
-final class DebugLogger: Logger {
+final class DebugLogger: ZestCore.Logger {
+    private let logger = os.Logger(subsystem: Bundle.main.bundleIdentifier ?? "App", category: "UseCase")
+
     func info(_ message: String, trace: TraceContext?) {
-        print("[INFO][\(trace?.traceId ?? "")] \(message)")
+        let traceId = trace?.traceId ?? ""
+        logger.info("[INFO][\(traceId)] \(message, privacy: .public)")
     }
 
     func warn(_ message: String, trace: TraceContext?) {
-        print("[WARN][\(trace?.traceId ?? "")] \(message)")
+        let traceId = trace?.traceId ?? ""
+        logger.warning("[WARN][\(traceId)] \(message, privacy: .public)")
     }
 
     func error(_ message: String, trace: TraceContext?, error: Error?) {
-        print("[ERROR][\(trace?.traceId ?? "")] \(message) \(error?.localizedDescription ?? "")")
+        let traceId = trace?.traceId ?? ""
+        let errorMsg = error?.localizedDescription ?? ""
+        logger.error("[ERROR][\(traceId)] \(message) \(errorMsg, privacy: .public)")
     }
 }
