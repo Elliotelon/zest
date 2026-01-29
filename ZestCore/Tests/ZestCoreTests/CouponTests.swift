@@ -6,8 +6,6 @@ import Foundation
 @MainActor
 struct CouponTests {
     
-    private let logger = MockLogger()
-    
     // Properties (SUT 및 Mock)
     private var sut: CouponViewModel
     private var mockRepository: MockCouponRepository
@@ -19,7 +17,7 @@ struct CouponTests {
         let repository = MockCouponRepository()
         self.mockRepository = repository
         
-        let fetchAvailableCouponsUseCase = FetchAvailableCouponsUseCase(repository: repository, logger: logger)
+        let fetchAvailableCouponsUseCase = FetchAvailableCouponsUseCase(repository: repository)
         let fetchUserCouponsUseCase = FetchUserCouponsUseCase(repository: repository)
         let issueCouponUseCase = IssueCouponUseCase(repository: repository)
         
