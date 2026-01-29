@@ -17,12 +17,12 @@ public final class CouponViewModel: ObservableObject {
     @Published public var errorMessage: String?
     @Published public var successMessage: String?
     
-    public let fetchAvailableCouponsUseCase: FetchAvailableCouponsUseCase
+    public let fetchAvailableCouponsUseCase: FetchAvailableCouponsUseCaseProtocol
     public let fetchUserCouponsUseCase: FetchUserCouponsUseCase
     public let issueCouponUseCase: IssueCouponUseCase
     
     init(
-        fetchAvailableCouponsUseCase: FetchAvailableCouponsUseCase,
+        fetchAvailableCouponsUseCase: FetchAvailableCouponsUseCaseProtocol,
         fetchUserCouponsUseCase: FetchUserCouponsUseCase,
         issueCouponUseCase: IssueCouponUseCase
     ) {
@@ -39,7 +39,7 @@ public final class CouponViewModel: ObservableObject {
         errorMessage = nil
         
         do {
-            availableCoupons = try await fetchAvailableCouponsUseCase.execute()
+            self.availableCoupons = try await fetchAvailableCouponsUseCase.execute(args: FetchAvailableCouponsInput())
             print("✅ 쿠폰 목록 로드 성공: \(availableCoupons.count)개")
         } catch {
             errorMessage = error.localizedDescription
