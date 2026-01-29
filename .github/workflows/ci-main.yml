@@ -15,10 +15,10 @@ jobs:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
       
       # ✅ Xcode 26 지정
-      - name: Set up Xcode 26
+      - name: Set up Xcode 26.2
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '26.0'
+          xcode-version: '26.2'
 
       # 1️⃣ Ruby 환경 세팅
       - name: Set up Ruby
