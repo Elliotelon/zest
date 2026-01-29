@@ -206,7 +206,9 @@ struct CouponCardView: View {
 }
 
 #Preview {
-    let couponDIContainer = CouponDIContainer()
-    let viewModel = couponDIContainer.makeCouponViewModel()
-    return CouponListView(viewModel: viewModel)
+    let logger = MockLogger()
+    let couponDIContainer = CouponDIContainer(logger: logger)
+    couponDIContainer.makeCouponListView()
 }
+
+

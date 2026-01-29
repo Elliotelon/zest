@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ZestCore
 
 struct ProductListView: View {
     @StateObject var viewModel: ProductViewModel
@@ -108,6 +109,8 @@ struct ProductRowView: View {
 }
 
 #Preview {
-    let diContainer = ProductDIContainer()
-    return diContainer.makeProductListView()
+    let logger = MockLogger()
+    let couponDIContainer = CouponDIContainer(logger: logger)
+    let productDIContainer = ProductDIContainer(couponDIContainer: couponDIContainer)
+    productDIContainer.makeProductListView()
 }
