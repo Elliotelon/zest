@@ -1,10 +1,3 @@
-//
-//  FetchUserCouponsUseCase.swift
-//  Zest
-//
-//  Created by AI Assistant on 1/22/26.
-//
-
 import Foundation
 
 /// 사용자가 보유한 쿠폰 목록을 가져오는 UseCase
