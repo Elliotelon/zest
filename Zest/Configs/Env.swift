@@ -8,6 +8,15 @@
 import Foundation
 
 struct Env {
+    static let googleAppID: String = {
+        guard let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist"),
+              let dict = NSDictionary(contentsOfFile: path) as? [String: Any],
+              let appID = dict["GOOGLE_APP_ID"] as? String else {
+            fatalError("🚨 GoogleService-Info.plist에 'GOOGLE_APP_ID'가 없습니다.")
+        }
+        return appID
+    }()
+    
     // Info.plist에서 ServerHost라는 키로 값을 읽어옵니다.
     static let host: String = {
         guard let host = Bundle.main.object(forInfoDictionaryKey: "SERVER_HOST") as? String else {

@@ -16,6 +16,12 @@ struct CouponListView: View {
     var body: some View {
         NavigationView {
             Group {
+                Button("강제 크래시") {
+                    fatalError("쿠폰강제 크래시")
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(.red)
+                
                 if viewModel.isLoading {
                     ProgressView("쿠폰 로딩 중...")
                 } else if let errorMessage = viewModel.errorMessage {
