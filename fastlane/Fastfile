@@ -9,9 +9,6 @@ platform :ios do
   lane :test do
     sh("swift test --package-path ../ZestCore")
 
-    ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "100"
-    ENV["FASTLANE_XCODEBUILD_SETTINGS_RETRIES"] = "5"
-
     scan(
       project: "Zest.xcodeproj",
       scheme: "Zest",
@@ -46,8 +43,6 @@ platform :ios do
       clone_branch_directly: true
     )
     
-
-
     # 2️⃣ 빌드 번호 자동 증가
     latest_build_number = latest_testflight_build_number(app_identifier: "com.elliot.Zest")
     increment_build_number(
