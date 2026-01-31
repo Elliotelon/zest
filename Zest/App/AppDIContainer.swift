@@ -18,10 +18,10 @@ final class AppDIContainer {
         #if DEBUG
         logger = DebugLogger()
         #else
-        logger = CrashlyticsLogger()
+        logger = CrashlyticsLogger(minLevel: .info)
         #endif
         
-//        logger = CrashlyticsLogger()
+//        logger = CrashlyticsLogger(minLevel: .info)
     }
     
     private lazy var authRepository: AuthRepositoryProtocol = {

@@ -12,7 +12,7 @@ public struct LogConfig {
         #if DEBUG
         return .info
         #else
-        return .warn
+        return .info
         #endif
     }
 }

@@ -118,7 +118,7 @@ struct ProductDetailView: View {
                                 .font(.headline)
                             
                             // 사용 가능한 쿠폰 목록
-                            if couponViewModel.isLoading {
+                            if couponViewModel.couponScreenState.isLoading {
                                 ProgressView("쿠폰 로딩 중...")
                                     .frame(maxWidth: .infinity)
                                     .padding()
@@ -133,7 +133,7 @@ struct ProductDetailView: View {
                                         coupon: coupon,
                                         isApplied: viewModel.selectedCoupon?.id == coupon.id,
                                         hasIssued: couponViewModel.hasUserCoupon(couponId: coupon.id),
-                                        isIssuing: couponViewModel.isIssuing,
+                                        isIssuing: couponViewModel.couponScreenState.isIssuing,
                                         onIssue: {
                                             guard let profileId = profileId else { return }
                                             Task {
@@ -155,7 +155,7 @@ struct ProductDetailView: View {
                             }
                             
                             // 성공/에러 메시지
-                            if let successMessage = couponViewModel.successMessage {
+                            if let successMessage = couponViewModel.couponScreenState.successMessage {
                                 HStack {
                                     Image(systemName: "checkmark.circle.fill")
                                         .foregroundColor(.green)
@@ -166,7 +166,7 @@ struct ProductDetailView: View {
                                 .padding(.horizontal)
                             }
                             
-                            if let errorMessage = couponViewModel.errorMessage {
+                            if let errorMessage = couponViewModel.couponScreenState.errorMessage {
                                 HStack {
                                     Image(systemName: "exclamationmark.triangle.fill")
                                         .foregroundColor(.red)

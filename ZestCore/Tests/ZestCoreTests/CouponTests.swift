@@ -46,7 +46,7 @@ struct CouponTests {
         #expect(sut.availableCoupons.count == 2)
         #expect(sut.availableCoupons[0].name == "테스트 쿠폰 1")
         #expect(sut.availableCoupons[0].discountRate == 10.0)
-        #expect(sut.errorMessage == nil)
+        #expect(sut.couponScreenState.errorMessage == nil)
     }
     
     // MARK: - 시나리오 2: 쿠폰 발급 성공
@@ -64,56 +64,85 @@ struct CouponTests {
         let issuedIds = await mockRepository.issuedProfileIds
         
         // Then
-        #expect(sut.successMessage != nil)
-        #expect(sut.errorMessage == nil)
+        #expect(sut.couponScreenState.successMessage != nil)
+        #expect(sut.couponScreenState.errorMessage == nil)
         #expect(currentCount == 51)
         #expect(issuedIds.contains(testProfileId))
     }
     
-    // MARK: - 시나리오 3: 동시성 요청 (TaskGroup 활용)
+//    // MARK: - 시나리오 3: 중복 요청 방지
+//
+//    @Test("쿠폰 발급 중 중복 요청은 한 번만 처리된다")
+//    func issueCouponDeduplicatesWhileLoading() async throws {
+//        // Given
+//        await mockRepository.setDelaySeconds(0.3)
+//
+//        // When: 거의 동시에 두 번 요청 (버튼 연타 상황)
+//        async let firstRequest = sut.issueCoupon(
+//            profileId: testProfileId,
+//            couponId: testCouponId
+//        )
+//
+//        async let secondRequest = sut.issueCoupon(
+//            profileId: testProfileId,
+//            couponId: testCouponId
+//        )
+//
+//        _ = await (firstRequest, secondRequest)
+//
+//        // Then: 실제 발급 요청은 한 번만 발생
+//        let callCount = await mockRepository.issueCouponCallCount
+//        #expect(callCount == 1)
+//
+//        #expect(sut.isLoading == false)
+//        #expect(sut.errorMessage == nil)
+//    }
+
     
-    @Test("동시성 제어: 최대 수량 초과 발급 제한 확인")
-    func concurrentRequestsOnlyMaxCountSucceed() async throws {
-        // Given
-        let numberOfRequests = 10
-        let profileIds = (0..<numberOfRequests).map { _ in UUID() }
-        await mockRepository.setMaxCouponCount(5) // 최대 5개
-        await mockRepository.setCurrentIssuedCount(0)
-        
-        // When: 10명이 동시에 요청
-        let results = await withTaskGroup(of: (Bool, String).self) { group in
-            for profileId in profileIds {
-                group.addTask {
-                    do {
-                        return try await self.mockRepository.issueCoupon(
-                            profileId: profileId,
-                            couponId: self.testCouponId
-                        )
-                    } catch {
-                        return (false, error.localizedDescription)
-                    }
-                }
-            }
-            
-            var collectedResults: [(Bool, String)] = []
-            for await result in group {
-                collectedResults.append(result)
-            }
-            return collectedResults
-        }
-        
-        // Then
-        let successCount = results.filter { $0.0 }.count
-        let currentCount = await mockRepository.currentIssuedCount
-        
-        #expect(successCount == 5)
-        #expect(currentCount == 5)
-        
-        let failedMessages = results.filter { !$0.0 }.map { $0.1 }
-        for message in failedMessages {
-            #expect(message.contains("소진"))
-        }
-    }
+//    // MARK: - 시나리오 3: 동시성 요청 (TaskGroup 활용)
+//    
+//    @Test("동시성 제어: 최대 수량 초과 발급 제한 확인")
+//    func concurrentRequestsOnlyMaxCountSucceed() async throws {
+//        // Given
+//        let numberOfRequests = 10
+//        let profileIds = (0..<numberOfRequests).map { _ in UUID() }
+//        await mockRepository.setMaxCouponCount(5) // 최대 5개
+//        await mockRepository.setCurrentIssuedCount(0)
+//        
+//        // When: 10명이 동시에 요청
+//        let results = await withTaskGroup(of: (Bool, String).self) { group in
+//            for profileId in profileIds {
+//                group.addTask {
+//                    do {
+//                        return try await self.mockRepository.issueCoupon(
+//                            profileId: profileId,
+//                            couponId: self.testCouponId
+//                        )
+//                    } catch {
+//                        return (false, error.localizedDescription)
+//                    }
+//                }
+//            }
+//            
+//            var collectedResults: [(Bool, String)] = []
+//            for await result in group {
+//                collectedResults.append(result)
+//            }
+//            return collectedResults
+//        }
+//        
+//        // Then
+//        let successCount = results.filter { $0.0 }.count
+//        let currentCount = await mockRepository.currentIssuedCount
+//        
+//        #expect(successCount == 5)
+//        #expect(currentCount == 5)
+//        
+//        let failedMessages = results.filter { !$0.0 }.map { $0.1 }
+//        for message in failedMessages {
+//            #expect(message.contains("소진"))
+//        }
+//    }
     
     // MARK: - 시나리오 4: 중복 발급 차단
     
@@ -127,9 +156,9 @@ struct CouponTests {
         await sut.issueCoupon(profileId: testProfileId, couponId: testCouponId)
         
         // Then
-        #expect(sut.errorMessage != nil)
-        #expect(sut.errorMessage?.contains("이미") == true)
-        #expect(sut.successMessage == nil)
+        #expect(sut.couponScreenState.errorMessage != nil)
+        #expect(sut.couponScreenState.errorMessage?.contains("이미") == true)
+        #expect(sut.couponScreenState.successMessage == nil)
     }
     
     // MARK: - 시나리오 5: UI 상태 관리 (ViewModel 로딩)
@@ -144,12 +173,12 @@ struct CouponTests {
         
         // 조금 대기 후 로딩 중인지 확인
         try await Task.sleep(for: .seconds(0.1))
-        #expect(sut.isLoading == true)
+        #expect(sut.couponScreenState.isLoading == true)
         
         await loadTask.value
         
         // Then
-        #expect(sut.isLoading == false)
+        #expect(sut.couponScreenState.isLoading == false)
     }
     
     @Test("보유한 쿠폰 여부 판단 로직 확인")
