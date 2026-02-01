@@ -1,10 +1,3 @@
-//
-//  LoggingConfig.swift
-//  Zest
-//
-//  Created by 김민규 on 1/28/26.
-//
-
 import ZestCore
 
 public struct LogConfig {
@@ -12,7 +5,7 @@ public struct LogConfig {
         #if DEBUG
         return .info
         #else
-        return .info
+        return .warn
         #endif
     }
 }

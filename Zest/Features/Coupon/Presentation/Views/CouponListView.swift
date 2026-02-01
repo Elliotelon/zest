@@ -1,14 +1,6 @@
-//
-//  CouponListView.swift
-//  Zest
-//
-//  Created by AI Assistant on 1/22/26.
-//
-
 import SwiftUI
 import ZestCore
 
-/// 쿠폰 목록 화면
 struct CouponListView: View {
     @StateObject var viewModel: CouponViewModel
     @ObservedObject var sessionManager = SessionManager.shared
@@ -177,11 +169,11 @@ struct CouponCardView: View {
                         .cornerRadius(4)
                 } else {
                     HStack(spacing: 4) {
-                        Button("강제 크래시") {
-                            fatalError("쿠폰강제 크래시")
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .tint(.red)
+//                        Button("강제 크래시") {
+//                            fatalError("쿠폰강제 크래시")
+//                        }
+//                        .buttonStyle(.borderedProminent)
+//                        .tint(.red)
                         Text("\(coupon.issuedCount)")
                             .font(.caption)
                             .fontWeight(.bold)

@@ -1,10 +1,3 @@
-//
-//  CouponRepositoryProtocol.swift
-//  Zest
-//
-//  Created by AI Assistant on 1/22/26.
-//
-
 import Foundation
 
 public protocol CouponRepositoryProtocol: Sendable {

@@ -1,10 +1,3 @@
-//
-//  CouponDTO.swift
-//  Zest
-//
-//  Created by AI Assistant on 1/22/26.
-//
-
 import Foundation
 
 /// 쿠폰 DTO

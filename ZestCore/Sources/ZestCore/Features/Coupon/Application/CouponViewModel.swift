@@ -1,10 +1,3 @@
-//
-//  CouponViewModel.swift
-//  Zest
-//
-//  Created by AI Assistant on 1/22/26.
-//
-
 import SwiftUI
 import Combine
 

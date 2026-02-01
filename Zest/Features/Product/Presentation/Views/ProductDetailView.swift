@@ -1,10 +1,3 @@
-//
-//  ProductDetailView.swift
-//  Zest
-//
-//  Created by AI Assistant on 1/21/26.
-//
-
 import SwiftUI
 import ZestCore
 
