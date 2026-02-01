@@ -1,21 +1,16 @@
-//
-//  CouponViewModel.swift
-//  Zest
-//
-//  Created by AI Assistant on 1/22/26.
-//
-
 import SwiftUI
 import Combine
 
 @MainActor
 public final class CouponViewModel: ObservableObject {
+    @Published public var couponScreenState = CouponScreenState()
+    
     @Published public var availableCoupons: [Coupon] = []
     @Published public var userCoupons: [UserCoupon] = []
-    @Published public var isLoading = false
-    @Published public var isIssuing = false // 쿠폰 발급 중 여부 (중복 방지)
-    @Published public var errorMessage: String?
-    @Published public var successMessage: String?
+//    @Published public var isLoading = false
+//    @Published public var isIssuing = false // 쿠폰 발급 중 여부 (중복 방지)
+//    @Published public var errorMessage: String?
+//    @Published public var successMessage: String?
     
     public let fetchAvailableCouponsUseCase: FetchAvailableCouponsUseCaseProtocol
 
@@ -34,20 +29,20 @@ public final class CouponViewModel: ObservableObject {
     
     /// 사용 가능한 쿠폰 목록을 로드합니다.
     public func loadAvailableCoupons() async {
-        guard !isLoading else { return }
+        guard !couponScreenState.isLoading else { return }
         
-        isLoading = true
-        errorMessage = nil
+        couponScreenState.isLoading = true
+        couponScreenState.errorMessage = nil
         
         do {
             self.availableCoupons = try await fetchAvailableCouponsUseCase.execute(args: FetchAvailableCouponsInput())
             print("✅ 쿠폰 목록 로드 성공: \(availableCoupons.count)개")
         } catch {
-            errorMessage = error.localizedDescription
+            couponScreenState.errorMessage = error.localizedDescription
             print("❌ 쿠폰 목록 로드 실패: \(error)")
         }
         
-        isLoading = false
+        couponScreenState.isLoading = false
     }
     
     /// 사용자가 보유한 쿠폰 목록을 로드합니다.
@@ -56,7 +51,7 @@ public final class CouponViewModel: ObservableObject {
             userCoupons = try await fetchUserCouponsUseCase.execute(profileId: profileId)
             print("✅ 내 쿠폰 목록 로드 성공: \(userCoupons.count)개")
         } catch {
-            errorMessage = error.localizedDescription
+            couponScreenState.errorMessage = error.localizedDescription
             print("❌ 내 쿠폰 목록 로드 실패: \(error)")
         }
     }
@@ -67,14 +62,14 @@ public final class CouponViewModel: ObservableObject {
     ///   - couponId: 쿠폰 ID
     public func issueCoupon(profileId: UUID, couponId: UUID) async {
         // 중복 요청 방지
-        guard !isIssuing else {
+        guard !couponScreenState.isIssuing else {
             print("⚠️ 이미 쿠폰 발급 처리 중입니다.")
             return
         }
         
-        isIssuing = true
-        errorMessage = nil
-        successMessage = nil
+        couponScreenState.isIssuing = true
+        couponScreenState.errorMessage = nil
+        couponScreenState.successMessage = nil
         
         do {
             let (success, message) = try await issueCouponUseCase.execute(
@@ -83,22 +78,22 @@ public final class CouponViewModel: ObservableObject {
             )
             
             if success {
-                successMessage = message
+                couponScreenState.successMessage = message
                 print("✅ \(message)")
                 
                 // 쿠폰 목록 새로고침
                 await loadAvailableCoupons()
                 await loadUserCoupons(profileId: profileId)
             } else {
-                errorMessage = message
+                couponScreenState.errorMessage = message
                 print("❌ \(message)")
             }
         } catch {
-            errorMessage = "쿠폰 발급 중 오류가 발생했습니다: \(error.localizedDescription)"
+            couponScreenState.errorMessage = "쿠폰 발급 중 오류가 발생했습니다: \(error.localizedDescription)"
             print("❌ 쿠폰 발급 실패: \(error)")
         }
         
-        isIssuing = false
+        couponScreenState.isIssuing = false
     }
     
     /// 특정 쿠폰을 이미 보유하고 있는지 확인합니다.

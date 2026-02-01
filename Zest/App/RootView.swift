@@ -68,8 +68,6 @@ struct RootView: View {
                 coordinator.showLogin()
             }
             
-            // 3. 코디네이터 시작
-            await coordinator.start()
         }
     }
 }
