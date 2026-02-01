@@ -3,6 +3,15 @@ import Combine
 
 @MainActor
 public final class CouponViewModel: ObservableObject {
+<<<<<<<< HEAD:ZestCore/Sources/ZestCore/Features/Coupon/Application/CouponViewModel.swift~HEAD
+    @Published public var availableCoupons: [Coupon] = []
+    @Published public var userCoupons: [UserCoupon] = []
+    @Published public var isLoading = false
+    @Published public var isIssuing = false // 쿠폰 발급 중 여부 (중복 방지)
+    @Published public var errorMessage: String?
+    @Published public var successMessage: String?
+    
+========
     @Published public var couponScreenState = CouponScreenState()
     
     @Published public var availableCoupons: [Coupon] = []
@@ -12,6 +21,7 @@ public final class CouponViewModel: ObservableObject {
 //    @Published public var errorMessage: String?
 //    @Published public var successMessage: String?
     
+>>>>>>>> origin/develop:ZestCore/Sources/ZestCore/Features/Coupon/Application/CouponViewModel.swift
     public let fetchAvailableCouponsUseCase: FetchAvailableCouponsUseCaseProtocol
 
     public let fetchUserCouponsUseCase: FetchUserCouponsUseCase
@@ -29,7 +39,11 @@ public final class CouponViewModel: ObservableObject {
     
     /// 사용 가능한 쿠폰 목록을 로드합니다.
     public func loadAvailableCoupons() async {
+<<<<<<<< HEAD:ZestCore/Sources/ZestCore/Features/Coupon/Application/CouponViewModel.swift~HEAD
+        guard !isLoading else { return }
+========
         guard !couponScreenState.isLoading else { return }
+>>>>>>>> origin/develop:ZestCore/Sources/ZestCore/Features/Coupon/Application/CouponViewModel.swift
         
         couponScreenState.isLoading = true
         couponScreenState.errorMessage = nil

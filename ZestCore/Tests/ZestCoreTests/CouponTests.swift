@@ -12,7 +12,7 @@ struct CouponTests {
     private let testCouponId = UUID()
     private let testProfileId = UUID()
     
-    // Swift Testing에서는 init이 XCTest의 setUp 역할을 합니다.
+    // Swift Testing에서는 init이 XCTest의 setUp 역할
     init() async throws {
         let repository = MockCouponRepository()
         self.mockRepository = repository
