@@ -1,6 +1,5 @@
 import Foundation
 
-/// 쿠폰 DTO
 public struct CouponDTO: Codable, Sendable  {
     public let id: UUID
     public let name: String
