@@ -3,6 +3,7 @@ import Combine
 
 @MainActor
 public final class CouponViewModel: ObservableObject {
+
     @Published public var couponScreenState = CouponScreenState()
     
     @Published public var availableCoupons: [Coupon] = []
@@ -29,6 +30,7 @@ public final class CouponViewModel: ObservableObject {
     
     /// 사용 가능한 쿠폰 목록을 로드합니다.
     public func loadAvailableCoupons() async {
+
         guard !couponScreenState.isLoading else { return }
         
         couponScreenState.isLoading = true
