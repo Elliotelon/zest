@@ -6,7 +6,7 @@ import Foundation
 @MainActor
 struct CouponTests {
     
-    // Properties (SUT, Mock)
+    // Properties (SUT 및 Mock)
     private var sut: CouponViewModel
     private var mockRepository: MockCouponRepository
     private let testCouponId = UUID()
