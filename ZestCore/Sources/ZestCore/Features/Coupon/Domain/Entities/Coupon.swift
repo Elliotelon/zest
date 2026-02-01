@@ -1,13 +1,5 @@
-//
-//  Coupon.swift
-//  Zest
-//
-//  Created by AI Assistant on 1/22/26.
-//
-
 import Foundation
 
-/// 쿠폰 엔티티
 public struct Coupon: Identifiable, Codable, Equatable, Sendable {
     public let id: UUID
     public let name: String

@@ -1,10 +1,3 @@
-//
-//  CrashlyticsLogger.swift
-//  Zest
-//
-//  Created by 김민규 on 1/28/26.
-//
-
 import FirebaseCrashlytics
 import ZestCore
 
