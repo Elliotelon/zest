@@ -1,14 +1,7 @@
-//
-//  ProductRepositoryProtocol.swift
-//  Zest
-//
-//  Created by 김민규 on 1/21/26.
-//
-
 import Foundation
 
-protocol ProductRepositoryProtocol {
-    /// 모든 상품 목록을 가져옵니다.
+protocol ProductRepositoryProtocol: Sendable {
+
     func fetchProducts() async throws -> [Product]
     
     /// 페이지네이션을 지원하는 상품 목록을 가져옵니다.

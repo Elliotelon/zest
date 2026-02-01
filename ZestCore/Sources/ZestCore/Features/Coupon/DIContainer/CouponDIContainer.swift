@@ -1,10 +1,3 @@
-//
-//  CouponDIContainer.swift
-//  Zest
-//
-//  Created by AI Assistant on 1/22/26.
-//
-
 import Supabase
 import SwiftUI
 
@@ -19,10 +12,6 @@ public final class CouponDIContainer {
     public init(logger: any Logger) {
         self.logger = logger
     }
-    
-    
-   
-    
 
     public func makeCouponViewModel() -> CouponViewModel {
         let repository = CouponRepository(client: client)

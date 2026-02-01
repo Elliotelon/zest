@@ -1,10 +1,3 @@
-//
-//  MockLogger.swift
-//  ZestCore
-//
-//  Created by 김민규 on 1/28/26.
-//
-
 public final class MockLogger: Logger {
     var logs: [String]
     
