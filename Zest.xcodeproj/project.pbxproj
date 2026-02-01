@@ -28,7 +28,6 @@
 /* Begin PBXFileReference section */
 		95015D992F1603A30034404F /* Zest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		950688072F17447000CBD018 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		95202BD02F27B085001029D1 /* Zest copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Zest copy-Info.plist"; path = "/Users/minkyu/Developer/IOS/Zest/Zest copy-Info.plist"; sourceTree = "<absolute>"; };
 		958910D02F23677E003FBD65 /* Zest.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Zest.xctestplan; sourceTree = "<group>"; };
 		9598A0E72F1F491400F9D106 /* .cursorrules */ = {isa = PBXFileReference; lastKnownFileType = text; path = .cursorrules; sourceTree = "<group>"; };
 		959C71462F248FD200FBD65C /* ZestCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ZestCore; sourceTree = "<group>"; };
@@ -99,7 +98,6 @@
 				950688072F17447000CBD018 /* .gitignore */,
 				95015D9B2F1603A30034404F /* Zest */,
 				959C71482F24904800FBD65C /* Frameworks */,
-				95202BD02F27B085001029D1 /* Zest copy-Info.plist */,
 				95015D9A2F1603A30034404F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -130,6 +128,7 @@
 				95015D952F1603A30034404F /* Sources */,
 				95015D962F1603A30034404F /* Frameworks */,
 				95015D972F1603A30034404F /* Resources */,
+				956610C92F2CBD6900499E3F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -233,6 +232,31 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		956610C92F2CBD6900499E3F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n\n\n\n\n\n\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		95015D952F1603A30034404F /* Sources */ = {
