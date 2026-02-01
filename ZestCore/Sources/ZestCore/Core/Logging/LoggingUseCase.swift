@@ -1,10 +1,3 @@
-//
-//  LoggingUseCase.swift
-//  ZestCore
-//
-//  Created by 김민규 on 1/29/26.
-//
-
 import Foundation
 
 public final class LoggingUseCase<U: DynamicExecutable>: DynamicExecutable {

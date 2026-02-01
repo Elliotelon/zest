@@ -1,13 +1,5 @@
-//
-//  ProductDTO.swift
-//  Zest
-//
-//  Created by 김민규 on 1/21/26.
-//
-
 import Foundation
 
-/// Supabase products 테이블과 매핑되는 DTO
 struct ProductDTO: Codable, Sendable {
     let id: UUID?
     let name: String
@@ -25,7 +17,6 @@ struct ProductDTO: Codable, Sendable {
         case createdAt = "created_at"
     }
     
-    /// DTO를 Entity로 변환
     func toEntity() -> Product {
         Product(
             id: id ?? UUID(),

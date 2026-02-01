@@ -1,14 +1,6 @@
-//
-//  CouponListView.swift
-//  Zest
-//
-//  Created by AI Assistant on 1/22/26.
-//
-
 import SwiftUI
 import ZestCore
 
-/// 쿠폰 목록 화면
 struct CouponListView: View {
     @StateObject var viewModel: CouponViewModel
     @ObservedObject var sessionManager = SessionManager.shared
@@ -16,9 +8,10 @@ struct CouponListView: View {
     var body: some View {
         NavigationView {
             Group {
-                if viewModel.isLoading {
+            
+                if viewModel.couponScreenState.isLoading {
                     ProgressView("쿠폰 로딩 중...")
-                } else if let errorMessage = viewModel.errorMessage {
+                } else if let errorMessage = viewModel.couponScreenState.errorMessage {
                     VStack(spacing: 16) {
                         Image(systemName: "exclamationmark.triangle")
                             .font(.system(size: 50))
@@ -52,7 +45,7 @@ struct CouponListView: View {
                             CouponCardView(
                                 coupon: coupon,
                                 hasIssued: viewModel.hasUserCoupon(couponId: coupon.id),
-                                isIssuing: viewModel.isIssuing,
+                                isIssuing: viewModel.couponScreenState.isIssuing,
                                 onIssue: {
                                     guard let profileId = sessionManager.profileId else {
                                         print("⚠️ 로그인이 필요합니다")
@@ -80,12 +73,12 @@ struct CouponListView: View {
                     await viewModel.loadUserCoupons(profileId: profileId)
                 }
             }
-            .alert("성공", isPresented: .constant(viewModel.successMessage != nil)) {
+            .alert("성공", isPresented: .constant(viewModel.couponScreenState.successMessage != nil)) {
                 Button("확인") {
-                    viewModel.successMessage = nil
+                    viewModel.couponScreenState.successMessage = nil
                 }
             } message: {
-                Text(viewModel.successMessage ?? "")
+                Text(viewModel.couponScreenState.successMessage ?? "")
             }
         }
     }
@@ -176,6 +169,11 @@ struct CouponCardView: View {
                         .cornerRadius(4)
                 } else {
                     HStack(spacing: 4) {
+//                        Button("강제 크래시") {
+//                            fatalError("쿠폰강제 크래시")
+//                        }
+//                        .buttonStyle(.borderedProminent)
+//                        .tint(.red)
                         Text("\(coupon.issuedCount)")
                             .font(.caption)
                             .fontWeight(.bold)
