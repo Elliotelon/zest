@@ -7,4 +7,11 @@ public struct CouponScreenState {
     public var errorMessage: String? = nil
     public var successMessage: String? = nil
     
+    public init(isLoading: Bool=false, isIssuing: Bool=false, errorMessage: String? = nil, successMessage: String? = nil) {
+        self.isLoading = isLoading
+        self.isIssuing = isIssuing
+        self.errorMessage = errorMessage
+        self.successMessage = successMessage
+    }
+    
 }

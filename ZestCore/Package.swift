@@ -28,6 +28,7 @@ let package = Package(
             dependencies: [
                 .product(name: "Supabase", package: "supabase-swift")
             ],
+            path: "Sources/ZestCore",
             swiftSettings: [
                 // Swift 6 모드와 데이터 레이스 검증을 활성화하는 표준 설정
                 .enableUpcomingFeature("StrictConcurrency"),

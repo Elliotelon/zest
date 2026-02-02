@@ -10,6 +10,7 @@
 		950688082F17447A00CBD018 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 950688072F17447000CBD018 /* .gitignore */; };
 		955793A12F29FD4800ACFFB5 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 955793A02F29FD4800ACFFB5 /* FirebaseCore */; };
 		955793A32F29FD4800ACFFB5 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 955793A22F29FD4800ACFFB5 /* FirebaseCrashlytics */; };
+		956A33042F30B333000F3C98 /* FeatureCoupon in Frameworks */ = {isa = PBXBuildFile; productRef = 956A33032F30B333000F3C98 /* FeatureCoupon */; };
 		9598A0E82F1F491E00F9D106 /* .cursorrules in Resources */ = {isa = PBXBuildFile; fileRef = 9598A0E72F1F491400F9D106 /* .cursorrules */; };
 		959C714A2F24904800FBD65C /* ZestCore in Frameworks */ = {isa = PBXBuildFile; productRef = 959C71492F24904800FBD65C /* ZestCore */; };
 		95BFD6F02F1A3704000CE31D /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 95BFD6EF2F1A3704000CE31D /* Supabase */; };
@@ -28,6 +29,7 @@
 /* Begin PBXFileReference section */
 		95015D992F1603A30034404F /* Zest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		950688072F17447000CBD018 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		956A33022F30B18F000F3C98 /* FeatureCoupon */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FeatureCoupon; sourceTree = "<group>"; };
 		958910D02F23677E003FBD65 /* Zest.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Zest.xctestplan; sourceTree = "<group>"; };
 		9598A0E72F1F491400F9D106 /* .cursorrules */ = {isa = PBXFileReference; lastKnownFileType = text; path = .cursorrules; sourceTree = "<group>"; };
 		959C71462F248FD200FBD65C /* ZestCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ZestCore; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 			files = (
 				95BFD6F02F1A3704000CE31D /* Supabase in Frameworks */,
 				955793A32F29FD4800ACFFB5 /* FirebaseCrashlytics in Frameworks */,
+				956A33042F30B333000F3C98 /* FeatureCoupon in Frameworks */,
 				955793A12F29FD4800ACFFB5 /* FirebaseCore in Frameworks */,
 				959C714A2F24904800FBD65C /* ZestCore in Frameworks */,
 			);
@@ -90,6 +93,7 @@
 		95015D902F1603A30034404F = {
 			isa = PBXGroup;
 			children = (
+				956A33022F30B18F000F3C98 /* FeatureCoupon */,
 				959C71462F248FD200FBD65C /* ZestCore */,
 				958910D02F23677E003FBD65 /* Zest.xctestplan */,
 				95C540DF2F2207EB00F52044 /* .github */,
@@ -144,6 +148,7 @@
 				959C71492F24904800FBD65C /* ZestCore */,
 				955793A02F29FD4800ACFFB5 /* FirebaseCore */,
 				955793A22F29FD4800ACFFB5 /* FirebaseCrashlytics */,
+				956A33032F30B333000F3C98 /* FeatureCoupon */,
 			);
 			productName = Zest;
 			productReference = 95015D992F1603A30034404F /* Zest.app */;
@@ -739,6 +744,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9557939F2F29FD4800ACFFB5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCrashlytics;
+		};
+		956A33032F30B333000F3C98 /* FeatureCoupon */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FeatureCoupon;
 		};
 		959C71492F24904800FBD65C /* ZestCore */ = {
 			isa = XCSwiftPackageProductDependency;

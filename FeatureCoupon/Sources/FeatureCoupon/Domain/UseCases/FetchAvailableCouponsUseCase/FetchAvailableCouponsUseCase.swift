@@ -1,4 +1,5 @@
 import Foundation
+import ZestCore
 
 public struct FetchAvailableCouponsInput: Sendable {
     public init(){}

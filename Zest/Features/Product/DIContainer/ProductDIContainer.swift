@@ -1,6 +1,7 @@
 import Supabase
 import SwiftUI
 import ZestCore
+import FeatureCoupon
 
 final class ProductDIContainer {
     private let client = APIService.shared.client
