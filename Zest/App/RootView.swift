@@ -1,6 +1,7 @@
 import SwiftUI
 import Supabase
 import ZestCore
+import FeatureCoupon
 
 struct RootView: View {
     @StateObject private var coordinator: AppCoordinator

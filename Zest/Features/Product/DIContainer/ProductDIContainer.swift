@@ -1,6 +1,7 @@
 import Supabase
 import SwiftUI
 import ZestCore
+import FeatureCoupon
 
 @MainActor
 final class ProductDIContainer {
