@@ -1,5 +1,6 @@
 import SwiftUI
 import ZestCore
+import FeatureCoupon
 
 struct CouponView: View {
     var body: some View {
