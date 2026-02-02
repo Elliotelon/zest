@@ -1,4 +1,5 @@
 import Foundation
+import ZestCore
 
 public final class LoggingFetchAvailableCouponsUseCase: FetchAvailableCouponsUseCaseProtocol {
     
