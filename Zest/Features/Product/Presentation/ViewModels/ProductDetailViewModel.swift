@@ -1,6 +1,6 @@
 import SwiftUI
 import Combine
-import ZestCore
+import FeatureCoupon
 
 @MainActor
 final class ProductDetailViewModel: ObservableObject {

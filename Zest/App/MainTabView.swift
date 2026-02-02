@@ -1,5 +1,5 @@
 import SwiftUI
-import ZestCore
+import FeatureCoupon
 
 struct MainTabView: View {
     let productDIContainer: ProductDIContainer
