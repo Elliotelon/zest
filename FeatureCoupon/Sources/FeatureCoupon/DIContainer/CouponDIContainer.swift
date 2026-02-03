@@ -1,21 +1,21 @@
 import Supabase
 import SwiftUI
 import ZestCore
-import FeatureCoupon
 
 @MainActor
-final class CouponDIContainer {
+public final class CouponDIContainer {
     private var client: SupabaseClient {
         APIService.shared.client
     }
     
     private let logger: any Logger
     
-    init(logger: any Logger) {
+    public init(logger: any Logger) {
         self.logger = logger
     }
+    
+    public func makeCouponViewModel() -> CouponViewModel {
 
-    func makeCouponViewModel() -> CouponViewModel {
         let repository = CouponRepository(client: client)
         
         let fetchAvailableCouponsUseCase = FetchAvailableCouponsUseCase(repository: repository)
@@ -29,16 +29,33 @@ final class CouponDIContainer {
             screen: "CouponScreen"
         )
         
+        let loggingFetchUserCouponsUseCase = LoggingFetchUserCouponsUseCase(
+            decorated: fetchUserCouponsUseCase,
+            logger: logger,
+            screen: "CouponScreen"
+        )
+        
+        let loggingIssueCouponUseCase = LoggingIssueCouponUseCase(
+            decorated: issueCouponUseCase,
+            logger: logger,
+            screen: "CouponScreen"
+        )
+        
+        
+        
         return CouponViewModel(
             fetchAvailableCouponsUseCase: loggingFetchAvailableCouponsUseCase,
-            fetchUserCouponsUseCase: fetchUserCouponsUseCase,
-            issueCouponUseCase: issueCouponUseCase
+            fetchUserCouponsUseCase: loggingFetchUserCouponsUseCase,
+            issueCouponUseCase: loggingIssueCouponUseCase
         )
     }
     
     @MainActor
-    func makeCouponListView() -> some View {
+    public func makeCouponListView() -> some View {
         let viewModel = self.makeCouponViewModel()
-        return CouponListView(viewModel: viewModel) // 이제 앱 타겟이므로 CouponListView를 인식함
+        return CouponListView(viewModel: viewModel)
     }
+    
 }
+
+

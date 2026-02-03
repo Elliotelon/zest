@@ -73,8 +73,7 @@ struct CouponUseCaseTests {
         
         // When
         let result = try await issueCouponUseCase.execute(
-            profileId: testProfileId,
-            couponId: testCouponId
+            args: IssueCouponInput(profileId: testProfileId, couponId: testCouponId)
         )
         
         let currentCount = await mockRepository.currentIssuedCount
@@ -95,13 +94,11 @@ struct CouponUseCaseTests {
         
         // When (동시에 두 번 요청)
         async let first = issueCouponUseCase.execute(
-            profileId: testProfileId,
-            couponId: testCouponId
+            args: IssueCouponInput(profileId: testProfileId, couponId: testCouponId)
         )
         
         async let second = issueCouponUseCase.execute(
-            profileId: testProfileId,
-            couponId: testCouponId
+            args: IssueCouponInput(profileId: testProfileId, couponId: testCouponId)
         )
         
         _ = try await (first, second)
@@ -121,8 +118,7 @@ struct CouponUseCaseTests {
         
         // When
         let result = try await issueCouponUseCase.execute(
-            profileId: testProfileId,
-            couponId: testCouponId
+            args: IssueCouponInput(profileId: testProfileId, couponId: testCouponId)
         )
         
         // Then
@@ -149,15 +145,11 @@ struct CouponUseCaseTests {
         await mockRepository.setUserCoupons(userCoupons)
         
         // When
-        let result = try await fetchUserCouponsUseCase.execute(profileId: testProfileId)
+        
+        let result = try await fetchUserCouponsUseCase.execute(args: testProfileId)
         
         // Then
         #expect(result.count == 1)
         #expect(result.first?.couponId == testCouponId)
     }
 }
-
-
-
-
-

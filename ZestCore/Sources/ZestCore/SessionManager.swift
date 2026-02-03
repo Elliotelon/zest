@@ -1,29 +1,28 @@
 import Foundation
 import Supabase
 import Combine
-import ZestCore
 
 @MainActor
-final class SessionManager: ObservableObject {
-    static let shared = SessionManager()
+public final class SessionManager: ObservableObject {
+    public static let shared = SessionManager()
     
-    @Published  private(set) var currentSession: Session?
-    @Published  private(set) var isLoading = false
+    @Published public private(set) var currentSession: Session?
+    @Published public private(set) var isLoading = false
     
     private let client: SupabaseClient
     private var authTask: Task<Void, Never>?
-    
+
     private init() {
         self.client = APIService.shared.client
         // ✅ 생성 시점에 실시간 감지 시작
         observeAuthChanges()
     }
     
-    var profileId: UUID? { currentSession?.user.id }
-    var email: String? { currentSession?.user.email }
+    public var profileId: UUID? { currentSession?.user.id }
+    public var email: String? { currentSession?.user.email }
     
     /// ✅ Supabase 인증 상태 실시간 구독
-    func observeAuthChanges() {
+    public func observeAuthChanges() {
         authTask?.cancel()
         authTask = Task {
             // authStateChanges는 로그인/로그아웃/토큰갱신 이벤트를 실시간으로 방출합니다.
@@ -39,7 +38,7 @@ final class SessionManager: ObservableObject {
     }
     
     /// 초기 세션 로드 (App 진입 시 호출)
-    func loadSession() async {
+    public func loadSession() async {
         guard !isLoading else { return }
         isLoading = true
         defer { isLoading = false }
@@ -51,8 +50,8 @@ final class SessionManager: ObservableObject {
             currentSession = nil
         }
     }
-    
-    func clearSession() {
+
+    public func clearSession() {
         currentSession = nil
     }
 }
