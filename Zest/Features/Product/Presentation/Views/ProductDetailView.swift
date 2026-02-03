@@ -9,184 +9,195 @@ struct ProductDetailView: View {
     
     var body: some View {
         ScrollView {
+            // MARK: - 상품 로딩 / 에러 / 콘텐츠 분기
             if viewModel.isLoading {
                 ProgressView("상품 정보 로딩 중...")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .padding(.top, 100)
             } else if let errorMessage = viewModel.errorMessage {
-                VStack(spacing: 16) {
-                    Image(systemName: "exclamationmark.triangle")
-                        .font(.system(size: 50))
-                        .foregroundColor(.orange)
-                    Text("오류 발생")
-                        .font(.headline)
-                    Text(errorMessage)
-                        .font(.caption)
-                        .foregroundColor(.red)
-                        .multilineTextAlignment(.center)
-                    Button("다시 시도") {
-                        Task {
-                            await viewModel.loadProductDetail()
-                        }
-                    }
-                    .buttonStyle(.borderedProminent)
+                errorView(message: errorMessage) {
+                    Task { await viewModel.loadProductDetail() }
                 }
-                .padding()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .padding(.top, 100)
             } else if let product = viewModel.product {
-                VStack(alignment: .leading, spacing: 0) {
-                    // 상품 이미지
-                    //                    AsyncImage(url: URL(string: product.imageUrl)) { image in
-                    //                        image
-                    //                            .resizable()
-                    //                            .scaledToFill()
-                    //                    } placeholder: {
-                    //                        Rectangle()
-                    //                            .fill(Color.gray.opacity(0.3))
-                    //                            .overlay(
-                    //                                ProgressView()
-                    //                            )
-                    //                    }
-                    //                    .frame(height: 300)
-                    //                    .clipped()
-                    
-                    VStack(alignment: .leading, spacing: 16) {
-                        // 상품명
-                        Text(product.name)
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .padding(.top, 20)
-                        
-                        // 가격 정보
-                        VStack(alignment: .leading, spacing: 8) {
-                            if viewModel.isCouponApplied {
-                                HStack {
-                                    Text("원가")
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
-                                    Text("₩\(Int(product.price))")
-                                        .font(.body)
-                                        .foregroundColor(.secondary)
-                                        .strikethrough()
-                                }
-                                
-                                HStack {
-                                    Text("할인가")
-                                        .font(.subheadline)
-                                        .fontWeight(.semibold)
-                                    Text("₩\(Int(viewModel.finalPrice))")
-                                        .font(.title)
-                                        .fontWeight(.bold)
-                                        .foregroundColor(.red)
-                                }
-                                
-                                Text("-₩\(Int(viewModel.discountAmount)) 할인")
-                                    .font(.caption)
-                                    .foregroundColor(.red)
-                            } else {
-                                Text("₩\(Int(product.price))")
-                                    .font(.title)
-                                    .fontWeight(.bold)
-                            }
-                        }
-                        .padding(.vertical, 8)
-                        
-                        Divider()
-                        
-                        // 상품 설명
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("상품 설명")
-                                .font(.headline)
-                            Text(product.description)
-                                .font(.body)
-                                .foregroundColor(.secondary)
-                        }
-                        .padding(.vertical, 8)
-                        
-                        Divider()
-                        
-                        // 쿠폰 섹션
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text("쿠폰")
-                                .font(.headline)
-                            
-                            // 사용 가능한 쿠폰 목록
-                            if couponViewModel.couponScreenState.isLoading {
-                                ProgressView("쿠폰 로딩 중...")
-                                    .frame(maxWidth: .infinity)
-                                    .padding()
-                            } else if couponViewModel.availableCoupons.isEmpty {
-                                Text("현재 사용 가능한 쿠폰이 없습니다.")
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                                    .padding()
-                            } else {
-                                ForEach(couponViewModel.availableCoupons) { coupon in
-                                    ProductDetailCouponCardView(
-                                        coupon: coupon,
-                                        isApplied: viewModel.selectedCoupon?.id == coupon.id,
-                                        hasIssued: couponViewModel.hasUserCoupon(couponId: coupon.id),
-                                        isIssuing: couponViewModel.couponScreenState.isIssuing,
-                                        onIssue: {
-                                            guard let profileId = profileId else { return }
-                                            Task {
-                                                await couponViewModel.issueCoupon(
-                                                    profileId: profileId,
-                                                    couponId: coupon.id
-                                                )
-                                            }
-                                        },
-                                        onApply: {
-                                            if viewModel.selectedCoupon?.id == coupon.id {
-                                                viewModel.removeCoupon()
-                                            } else {
-                                                viewModel.applyCoupon(coupon)
-                                            }
-                                        }
-                                    )
-                                }
-                            }
-                            
-                            // 성공/에러 메시지
-                            if let successMessage = couponViewModel.couponScreenState.successMessage {
-                                HStack {
-                                    Image(systemName: "checkmark.circle.fill")
-                                        .foregroundColor(.green)
-                                    Text(successMessage)
-                                        .font(.caption)
-                                        .foregroundColor(.green)
-                                }
-                                .padding(.horizontal)
-                            }
-                            
-                            if let errorMessage = couponViewModel.couponScreenState.errorMessage {
-                                HStack {
-                                    Image(systemName: "exclamationmark.triangle.fill")
-                                        .foregroundColor(.red)
-                                    Text(errorMessage)
-                                        .font(.caption)
-                                        .foregroundColor(.red)
-                                }
-                                .padding(.horizontal)
-                            }
-                        }
-                        .padding(.vertical, 8)
-                        
-                        Spacer(minLength: 100)
-                    }
-                    .padding(.horizontal, 20)
-                }
+                productContent(product: product)
             }
         }
         .navigationBarTitleDisplayMode(.inline)
         .task {
             await viewModel.loadProductDetail()
-            await couponViewModel.loadAvailableCoupons()
+            
             if let profileId = profileId {
+                await couponViewModel.loadAvailableCoupons()
                 await couponViewModel.loadUserCoupons(profileId: profileId)
             }
         }
+    }
+    
+    // MARK: - 상품 콘텐츠
+    @ViewBuilder
+    private func productContent(product: Product) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            VStack(alignment: .leading, spacing: 16) {
+                Text(product.name)
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .padding(.top, 20)
+                
+                priceView(product: product)
+                
+                Divider()
+                
+                productDescriptionView(product: product)
+                
+                Divider()
+                
+                couponSectionView()
+                
+                Spacer(minLength: 100)
+            }
+            .padding(.horizontal, 20)
+        }
+    }
+    
+    // MARK: - 가격 정보
+    @ViewBuilder
+    private func priceView(product: Product) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if viewModel.isCouponApplied {
+                HStack {
+                    Text("원가")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    Text("₩\(Int(product.price))")
+                        .font(.body)
+                        .foregroundColor(.secondary)
+                        .strikethrough()
+                }
+                
+                HStack {
+                    Text("할인가")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                    Text("₩\(Int(viewModel.finalPrice))")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .foregroundColor(.red)
+                }
+                
+                Text("-₩\(Int(viewModel.discountAmount)) 할인")
+                    .font(.caption)
+                    .foregroundColor(.red)
+            } else {
+                Text("₩\(Int(product.price))")
+                    .font(.title)
+                    .fontWeight(.bold)
+            }
+        }
+        .padding(.vertical, 8)
+    }
+    
+    // MARK: - 상품 설명
+    @ViewBuilder
+    private func productDescriptionView(product: Product) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("상품 설명")
+                .font(.headline)
+            Text(product.description)
+                .font(.body)
+                .foregroundColor(.secondary)
+        }
+        .padding(.vertical, 8)
+    }
+    
+    // MARK: - 쿠폰 섹션
+    @ViewBuilder
+    private func couponSectionView() -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("쿠폰")
+                .font(.headline)
+            
+            switch couponViewModel.state {
+            case .idle, .loading:
+                ProgressView("쿠폰 로딩 중...")
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                
+            case .empty:
+                Text("현재 사용 가능한 쿠폰이 없습니다.")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .padding()
+                
+            case let .content(availableCoupons, userCoupons):
+                ForEach(availableCoupons) { coupon in
+                    ProductDetailCouponCardView(
+                        coupon: coupon,
+                        isApplied: viewModel.selectedCoupon?.id == coupon.id,
+                        hasIssued: couponViewModel.hasUserCoupon(couponId: coupon.id, in: userCoupons),
+                        isIssuing: couponViewModel.isIssuing,
+                        onIssue: {
+                            guard let profileId = profileId else { return }
+                            Task {
+                                await couponViewModel.issueCoupon(profileId: profileId, couponId: coupon.id)
+                            }
+                        },
+                        onApply: {
+                            if viewModel.selectedCoupon?.id == coupon.id {
+                                viewModel.removeCoupon()
+                            } else {
+                                viewModel.applyCoupon(coupon)
+                            }
+                        }
+                    )
+                }
+                
+            case let .error(errorState):
+                HStack {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .foregroundColor(.red)
+                    Text(errorMessage(for: errorState))
+                        .font(.caption)
+                        .foregroundColor(.red)
+                }
+                .padding()
+            }
+        }
+        .padding(.vertical, 8)
+    }
+    
+    // MARK: - 쿠폰 에러 메시지
+    private func errorMessage(for errorState: CouponErrorState) -> String {
+        switch errorState {
+        case .network:
+            return "네트워크 오류가 발생했습니다."
+        case .server:
+            return "서버 오류가 발생했습니다."
+        case .unauthorized:
+            return "로그인이 필요합니다."
+        case let .domain(message):
+            return message
+        }
+    }
+    
+    // MARK: - 에러 뷰
+    @ViewBuilder
+    private func errorView(message: String, retryAction: @escaping () -> Void) -> some View {
+        VStack(spacing: 16) {
+            Image(systemName: "exclamationmark.triangle")
+                .font(.system(size: 50))
+                .foregroundColor(.orange)
+            Text("오류 발생")
+                .font(.headline)
+            Text(message)
+                .font(.caption)
+                .foregroundColor(.red)
+                .multilineTextAlignment(.center)
+            Button("다시 시도", action: retryAction)
+                .buttonStyle(.borderedProminent)
+        }
+        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.top, 100)
     }
 }
 
@@ -214,7 +225,6 @@ struct ProductDetailCouponCardView: View {
                     .font(.caption)
                     .foregroundColor(.secondary)
                 
-                // 쿠폰 남은 수량 표시
                 HStack(spacing: 4) {
                     if coupon.isExhausted {
                         Text("소진됨")
@@ -236,7 +246,6 @@ struct ProductDetailCouponCardView: View {
             Spacer()
             
             VStack(spacing: 8) {
-                // 발급 버튼 (아직 발급받지 않은 경우)
                 if !hasIssued && !coupon.isExhausted {
                     Button(action: onIssue) {
                         if isIssuing {
@@ -256,7 +265,6 @@ struct ProductDetailCouponCardView: View {
                     .disabled(isIssuing)
                 }
                 
-                // 적용 버튼 (발급받은 경우)
                 if hasIssued {
                     Button(action: onApply) {
                         Text(isApplied ? "적용됨" : "적용")
