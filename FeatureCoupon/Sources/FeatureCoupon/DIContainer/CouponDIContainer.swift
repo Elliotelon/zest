@@ -29,10 +29,24 @@ public final class CouponDIContainer {
             screen: "CouponScreen"
         )
         
+        let loggingFetchUserCouponsUseCase = LoggingFetchUserCouponsUseCase(
+            decorated: fetchUserCouponsUseCase,
+            logger: logger,
+            screen: "CouponScreen"
+        )
+        
+        let loggingIssueCouponUseCase = LoggingIssueCouponUseCase(
+            decorated: issueCouponUseCase,
+            logger: logger,
+            screen: "CouponScreen"
+        )
+        
+        
+        
         return CouponViewModel(
             fetchAvailableCouponsUseCase: loggingFetchAvailableCouponsUseCase,
-            fetchUserCouponsUseCase: fetchUserCouponsUseCase,
-            issueCouponUseCase: issueCouponUseCase
+            fetchUserCouponsUseCase: loggingFetchUserCouponsUseCase,
+            issueCouponUseCase: loggingIssueCouponUseCase
         )
     }
     
