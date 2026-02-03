@@ -65,6 +65,6 @@ jobs:
             echo "SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}"
           } > Zest/Configs/Debug.ci.xcconfig
 
-      # 6️⃣ ZestCore Logic Tests
-      - name: Run ZestCore Logic Tests
-        run: swift test --package-path ./ZestCore
+      # 6️⃣ FeatureCoupon Logic Tests
+      - name: Run FeatureCoupon Logic Tests
+        run: swift test --package-path ./FeatureCoupon

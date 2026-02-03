@@ -1,5 +1,6 @@
 import SwiftUI
 import ZestCore
+import FeatureCoupon
 
 struct ProductListView: View {
     @StateObject var viewModel: ProductViewModel
