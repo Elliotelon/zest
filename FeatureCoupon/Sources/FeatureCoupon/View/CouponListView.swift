@@ -1,5 +1,4 @@
 import SwiftUI
-import FeatureCoupon
 import ZestCore
 
 struct CouponListView: View {

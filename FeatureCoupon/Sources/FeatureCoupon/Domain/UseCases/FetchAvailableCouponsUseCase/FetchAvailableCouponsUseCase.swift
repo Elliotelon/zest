@@ -15,7 +15,7 @@ public final class FetchAvailableCouponsUseCase: FetchAvailableCouponsUseCasePro
         self.repository = repository
     }
     
-    public func execute(args: Input) async throws -> [Coupon] {
+    public func execute(args: Input) async throws -> Output {
         try await repository.fetchAvailableCoupons()
     }
 }
