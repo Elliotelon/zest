@@ -3,6 +3,7 @@ import Combine
 import FeatureCoupon
 
 @MainActor
+<<<<<<<< HEAD:Zest/Features/Coupon/ViewModel/CouponViewModel.swift
 final class CouponViewModel: ObservableObject {
     
     @Published var couponScreenState = CouponScreenState()
@@ -18,11 +19,28 @@ final class CouponViewModel: ObservableObject {
     
     let fetchUserCouponsUseCase: FetchUserCouponsUseCase
     let issueCouponUseCase: IssueCouponUseCase
+========
+public final class CouponViewModel: ObservableObject {
     
-    init(
+    @Published public var couponScreenState = CouponScreenState()
+    
+    @Published public var availableCoupons: [Coupon] = []
+    @Published public var userCoupons: [UserCoupon] = []
+    //    @Published public var isLoading = false
+    //    @Published public var isIssuing = false // 쿠폰 발급 중 여부 (중복 방지)
+    //    @Published public var errorMessage: String?
+    //    @Published public var successMessage: String?
+    
+    let fetchAvailableCouponsUseCase: FetchAvailableCouponsUseCaseProtocol
+>>>>>>>> d9efb0e6e9c4b0730695120d8bc3151909806423:FeatureCoupon/Sources/FeatureCoupon/ViewModel/CouponViewModel.swift
+    
+    let fetchUserCouponsUseCase: FetchUserCouponsUseCaseProtocol
+    let issueCouponUseCase: IssueCouponUseCaseProtocol
+    
+    public init(
         fetchAvailableCouponsUseCase: FetchAvailableCouponsUseCaseProtocol,
-        fetchUserCouponsUseCase: FetchUserCouponsUseCase,
-        issueCouponUseCase: IssueCouponUseCase
+        fetchUserCouponsUseCase: FetchUserCouponsUseCaseProtocol,
+        issueCouponUseCase: IssueCouponUseCaseProtocol
     ) {
         self.fetchAvailableCouponsUseCase = fetchAvailableCouponsUseCase
         self.fetchUserCouponsUseCase = fetchUserCouponsUseCase
@@ -30,7 +48,11 @@ final class CouponViewModel: ObservableObject {
     }
     
     /// 사용 가능한 쿠폰 목록을 로드합니다.
+<<<<<<<< HEAD:Zest/Features/Coupon/ViewModel/CouponViewModel.swift
     func loadAvailableCoupons() async {
+========
+    public func loadAvailableCoupons() async {
+>>>>>>>> d9efb0e6e9c4b0730695120d8bc3151909806423:FeatureCoupon/Sources/FeatureCoupon/ViewModel/CouponViewModel.swift
         
         guard !couponScreenState.isLoading else { return }
         
@@ -51,7 +73,7 @@ final class CouponViewModel: ObservableObject {
     /// 사용자가 보유한 쿠폰 목록을 로드합니다.
     func loadUserCoupons(profileId: UUID) async {
         do {
-            userCoupons = try await fetchUserCouponsUseCase.execute(profileId: profileId)
+            userCoupons = try await fetchUserCouponsUseCase.execute(args: profileId)
             print("✅ 내 쿠폰 목록 로드 성공: \(userCoupons.count)개")
         } catch {
             couponScreenState.errorMessage = error.localizedDescription
@@ -76,8 +98,7 @@ final class CouponViewModel: ObservableObject {
         
         do {
             let (success, message) = try await issueCouponUseCase.execute(
-                profileId: profileId,
-                couponId: couponId
+                args: IssueCouponInput(profileId: profileId, couponId: couponId)
             )
             
             if success {

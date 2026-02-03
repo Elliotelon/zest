@@ -73,8 +73,12 @@ struct CouponUseCaseTests {
         
         // When
         let result = try await issueCouponUseCase.execute(
+<<<<<<< HEAD
             profileId: testProfileId,
             couponId: testCouponId
+=======
+            args: IssueCouponInput(profileId: testProfileId, couponId: testCouponId)
+>>>>>>> d9efb0e6e9c4b0730695120d8bc3151909806423
         )
         
         let currentCount = await mockRepository.currentIssuedCount
@@ -95,6 +99,7 @@ struct CouponUseCaseTests {
         
         // When (동시에 두 번 요청)
         async let first = issueCouponUseCase.execute(
+<<<<<<< HEAD
             profileId: testProfileId,
             couponId: testCouponId
         )
@@ -102,6 +107,13 @@ struct CouponUseCaseTests {
         async let second = issueCouponUseCase.execute(
             profileId: testProfileId,
             couponId: testCouponId
+=======
+            args: IssueCouponInput(profileId: testProfileId, couponId: testCouponId)
+        )
+        
+        async let second = issueCouponUseCase.execute(
+            args: IssueCouponInput(profileId: testProfileId, couponId: testCouponId)
+>>>>>>> d9efb0e6e9c4b0730695120d8bc3151909806423
         )
         
         _ = try await (first, second)
@@ -121,8 +133,12 @@ struct CouponUseCaseTests {
         
         // When
         let result = try await issueCouponUseCase.execute(
+<<<<<<< HEAD
             profileId: testProfileId,
             couponId: testCouponId
+=======
+            args: IssueCouponInput(profileId: testProfileId, couponId: testCouponId)
+>>>>>>> d9efb0e6e9c4b0730695120d8bc3151909806423
         )
         
         // Then
@@ -149,7 +165,11 @@ struct CouponUseCaseTests {
         await mockRepository.setUserCoupons(userCoupons)
         
         // When
+<<<<<<< HEAD
         let result = try await fetchUserCouponsUseCase.execute(profileId: testProfileId)
+=======
+        let result = try await fetchUserCouponsUseCase.execute(args: testProfileId)
+>>>>>>> d9efb0e6e9c4b0730695120d8bc3151909806423
         
         // Then
         #expect(result.count == 1)
